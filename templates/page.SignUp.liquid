@@ -1,0 +1,453 @@
+<link rel="stylesheet" href="https://unpkg.com/@shopify/polaris@5.5.0/dist/styles.css"/>
+<style>
+.Polaris-Button:disabled {
+opacity: 0.5;
+}
+
+.hide {
+  display: none;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  top: 420px;
+  left: 0;
+  position: fixed;
+  display: block;
+  z-index: 99;
+  text-align: center;
+}
+
+.PolarisPortalsContainer{
+    line-height: 3.3rem;
+    border-radius: 3px;
+    font-weight: bold;
+    border-bottom-color: #ddd;
+  }
+  
+ .Polaris-TextField__Input{
+  border: 0.1rem solid black !important;
+  }
+ 
+@media (min-width: 30.625em){ .Polaris-Card__Section{ padding:2rem 22rem; } }
+  .Polaris-FormLayout__Item {
+  	margin-right:2rem;
+  }  
+</style>
+<script>
+window.onload = function () {
+    loadSignUpPageScript();
+}
+function loadSignUpPageScript(){
+  if(screen.width > 800)
+  {
+    $('#SignupContent').css('padding', '2em 10em 2em 10em');
+  }
+var CheckSignUpPageScript = setInterval(function () {
+        clearInterval(CheckSignUpPageScript);
+        if (!window.jQuery || (typeof jQuery === 'undefined') || (parseFloat(jQuery.fn.jquery) < 1.7)) {
+            loadScript('https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js', function () {
+                jQuery191 = jQuery.noConflict(true);
+        jQuery = jQuery191;
+            $ = jQuery191;
+                GetTeamManagerInfo(jQuery191);
+            });
+        }
+        else {
+            GetTeamManagerInfo(jQuery);
+        }
+}, 100);
+}
+var loadScript = function(url, callback){
+var script = document.createElement("script");
+  script.type = "text/javascript";
+
+  // If the browser is Internet Explorer.
+  if (script.readyState){ 
+    script.onreadystatechange = function(){
+      if (script.readyState == "loaded" || script.readyState == "complete"){
+        script.onreadystatechange = null;
+        callback();
+      }
+    };
+  // For any other browser.
+  } else {
+    script.onload = function(){
+      callback();
+    };
+  }
+
+  script.src = url;
+  document.getElementsByTagName("head")[0].appendChild(script);
+ 
+};
+</script>
+
+<script>
+  var onSuccessGetData = function(response){    
+    if(response.select.referralpage && response.IsTeamManager)
+    {
+      $("#welcomemsg").show();
+    }
+  }  
+  
+  function GetTeamManagerInfo($){  
+    var urlVal= window.location.protocol +"//"+ window.location.hostname +"/apps/SalesRep?customerId={{customer.id}}&customerName=null&data=4";
+    $.get(
+      urlVal,
+      function (data, status) {
+        onSuccessGetData(data);
+      }
+    );        
+  };
+  
+    var onSuccessSubmit = function (response,textStatus)
+    {
+      if(response == false)
+      {
+        $("#errorsmsg").show();
+        $("#successmsg").hide();
+      }
+      else
+      {
+        $("#SignupContent").hide();
+        $("#Signup_message").hide();
+        $("#signupbtn").hide();
+        $("#successmsg").show();
+        $("#errorsmsg").hide();
+      }
+    $(".signupbtn").html("Save Details");
+    }
+    
+  var submitDetails = function(){  
+      $('#emailerror').hide();
+      $('#Fnameerror').hide();
+      $('#PhNumbererror').hide();
+      $('#Lnameerror').hide();
+      $('#loaderImg').show();
+      
+      var IsTeamManager=false;
+      var url_string = window.location.href;
+      var url = new URL(url_string);
+      var ManagerId = url.searchParams.get("manager");
+	  var isErrorFound =false;
+    
+      if (!ManagerId) {
+          ManagerId = url.searchParams.get("MANAGER");
+      }
+      if(ManagerId!=null)
+      {
+        IsTeamManager=true;
+      }
+       
+      if(document.getElementById("Username").value==""){
+        $('#Fnameerror').show();
+        isErrorFound =true;
+      }
+      if(document.getElementById("mailid").value==""){
+        $('#emailerror').show();
+        isErrorFound =true;
+      } 
+      if(document.getElementById("Lname").value==""){
+        $('#Lnameerror').show();
+      	isErrorFound =true;
+      }
+      if(document.getElementById("PhNumber").value==""){
+        $('#PhNumbererror').show();
+      	isErrorFound =true;
+      }
+      if(isErrorFound ==false)
+      {
+        $(".signupbtn").html("Saving Details...");
+    $("#errorsmsg").hide();
+    $("#successmsg").hide();
+        $("#RepExistErrorMsg").hide();
+     
+      var usermail=document.getElementById("mailid").value;
+      var username=document.getElementById("Username").value;
+        var Lname=document.getElementById("Lname").value; 
+       
+        var PhNumber=document.getElementById("PhNumber").value;
+        var fbHandle=document.getElementById("fbHandle").value;
+        var InstaHandle=document.getElementById("InstaHandle").value;
+              
+    var strUser;
+    {% if customer %}
+      strUser = {{customer.id}};
+    {% else %}
+      strUser = "";
+    {% endif %}
+        
+        var TeamManagerName = "{{customer.first_name}} {{customer.last_name}}"
+
+        var fileUpload = $('#file')[0].files[0];
+        var fileData = new FormData();
+        fileData.append('postedFile', fileUpload);
+      
+      var user = {
+        "salesrepId" : strUser,
+          "email" : usermail,
+            "name" : username,
+            "TeamManagerName":TeamManagerName,
+            "Lname":Lname,
+          "IsTeamManager":IsTeamManager,
+           "PhNumber":PhNumber,
+          "fbHandle":fbHandle,
+          "InstaHandle":InstaHandle
+      }
+        
+        var data = JSON.stringify(user);
+        var urlVal = window.location.protocol +"//"+ window.location.hostname +"/apps/SalesRep?pageIndex=21&data="+data;
+        console.log(urlVal);
+
+        $.ajax({
+            url: urlVal,
+            type: "POST",
+            contentType: false, // Not to set any content header  
+            processData: false, // Not to process data  
+            data: fileData,
+            success: function (data, status) {
+              $('#loaderImg').hide();
+                onSuccessSubmit(data, status);
+            },
+            error: function (err) {
+              	$('#loaderImg').hide();
+                alert(err.statusText);
+            }
+        }); 
+      }
+    else{
+      	$('#loaderImg').hide();
+    	return;
+    }
+    }
+</script>
+<script>
+    $(document).ready(function() {
+        $(".Polaris-Button").on("click", function() {
+          $(".loading-icon").removeClass("hide");
+         // $(".Polaris-Button").attr("disabled", true);
+          $(".btn-txt").text("Saving details...");
+
+         setTimeout(function() {
+            $(".loading-icon").addClass("hide");
+           // $(".Polaris-Button").attr("disabled", false);
+            $(".btn-txt").text("Save Details");
+          },3000);
+        });
+      });
+</script>
+<script>
+  var UploadEvent = "";
+var loadFile = function(event) {
+  $('#profileDiv').hide();
+  $('#profileBorderDiv').show();
+  UploadEvent= event;
+};
+  
+  var uploadProfile = function(event) {
+    $('#profileDiv').show();
+    $('#profileBorderDiv').hide();
+    var image = document.getElementById('showUploadedProfileImg');
+  	image.src = URL.createObjectURL(UploadEvent.target.files[0]);
+  }
+</script>
+<body>
+<div class="loading" id="loaderImg" style="display: none"><img class="loading-icon" src="https://salesteam-ppe.azurewebsites.net/Content/loading.gif"/></div>
+  <div style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+    <div class="Polaris-Card"  style="padding:5em;">
+      <div class="Polaris-Card__Header" style="text-align:center">
+        <p class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">{{ page.title }}</p><br>
+        <p class="Polaris-DisplayText Polaris-DisplayText--sizeMedium" id="Signup_message">Please fill in this form to sign up as a sales rep and get access to all Sales Team features.</p>
+        <hr style="border-bottom:#ffff;">
+        <p id="welcomemsg" style="display:none" class="Polaris-DisplayText Polaris-DisplayText--sizeSmall">Hello {{customer.first_name}},sign up sales rep and get a commission on sales made by reps under you</p>
+      </div>
+      <div id="formContent" style="border:1px solid #ddd;">
+      <div class="Polaris-Card__Section" id="SignupContent">
+        
+      <div class="Polaris-FormLayout__Items" style="display:flex;">
+          
+        <div class="Polaris-FormLayout__Item">
+        <center>
+         <div id="profileBorderDiv" style="width:150px;height:150px;border:1px solid #ddd;"></div>
+         <div id="profileDiv" style="display:none;"><img id="showUploadedProfileImg" width="150" height="150" /></div>
+        </center>
+          </div>
+          <div class="Polaris-FormLayout__Item">
+            <div class="">
+          <div class="PolarisPortalsContainer">
+            Upload Profile Picture
+          </div>
+          
+        </div>
+          <div class="Polaris-Connected_Item Polaris-Connected_Item--primary">
+              <div class="Polaris-TextField Polaris-TextField--hasValue">
+                <input style="padding: none;" class="Polaris-TextField__Input" aria-labelledby="PolarisTextField8Label" aria-invalid="false" aria-multiline="false" id="file" type="file" name="postedFile" accept="image/*" / style="padding:0px !important;" onchange="loadFile(event)">
+                <div class="Polaris-TextField__Backdrop"></div>
+              </div>
+          </div>
+          
+           <div class="Polaris-FormLayout__Item" style="font-weight: normal !important;margin-left: 0 !important;">
+           <center>  <input id="upload" type="submit" name="upload" value="Upload" onclick="uploadProfile()" class="Polaris-Button Polaris-Button--primary" />
+             </center></div> 
+          </div>
+        </div>
+
+        <br>
+        <div class="Polaris-FormLayout__Items" style="display:flex;">
+          <div class="Polaris-FormLayout__Item">
+        <div class="">
+          <div class="PolarisPortalsContainer">
+            <center>
+              First Name <span style="color:red">*</span>
+          </center>
+          </div>
+          <div >
+            <div class="Polaris-Connected_Item Polaris-Connected_Item--primary">
+              <div class="Polaris-TextField Polaris-TextField--hasValue">
+                <input id="Username" class="Polaris-TextField__Input" aria-labelledby="PolarisTextField8Label" aria-invalid="false" aria-multiline="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:none" class="Polaris-TextStyle--variationNegative" id="Fnameerror">Please enter First Name</div>
+        </div>
+          </div>
+        <br>
+          <div class="Polaris-FormLayout__Item">
+        <div class="">
+          <div class="PolarisPortalsContainer">
+            <center>
+              Last Name <span style="color:red">*</span>
+            </center>  
+          </div>
+          <div >
+            <div class="Polaris-Connected_Item Polaris-Connected_Item--primary">
+              <div class="Polaris-TextField Polaris-TextField--hasValue">
+                <input id="Lname" class="Polaris-TextField__Input" aria-labelledby="PolarisTextField8Label" aria-invalid="false" aria-multiline="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                
+              </div>
+            </div>
+          </div>
+          <div style="display:none" class="Polaris-TextStyle--variationNegative" id="Lnameerror">Please enter Last Name</div>
+        </div>
+          </div>
+        </div>
+        <br>
+        <div class="Polaris-FormLayout__Items" style="display:flex;">
+          <div class="Polaris-FormLayout__Item">
+            <div class="">
+          <div class="PolarisPortalsContainer">
+            <center>
+              Email <span style="color:red">*</span>
+            </center>  
+          </div>
+          <div>
+            <div class="Polaris-Connected_Item Polaris-Connected_Item--primary">
+              <div class="Polaris-TextField Polaris-TextField--hasValue">
+                <input id="mailid" class="Polaris-TextField__Input" aria-labelledby="PolarisTextField8Label" aria-invalid="false" aria-multiline="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                 
+              </div>
+            </div>
+          </div>
+              <div style="display:none" class="Polaris-TextStyle--variationNegative" id="emailerror">Please enter Email</div>
+        </div>
+          </div>
+        <br>
+          <div class="Polaris-FormLayout__Item">
+            <div class="">
+          <div class="PolarisPortalsContainer">
+            <center>
+              Phone Number <span style="color:red">*</span>
+            </center>  
+          </div>
+          <div >
+            <div class="Polaris-Connected_Item Polaris-Connected_Item--primary">
+              <div class="Polaris-TextField Polaris-TextField--hasValue">
+                <input id="PhNumber" class="Polaris-TextField__Input" aria-labelledby="PolarisTextField8Label" aria-invalid="false" aria-multiline="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                
+              </div>
+            </div>
+          </div>
+              <div style="display:none" class="Polaris-TextStyle--variationNegative" id="PhNumbererror">Please enter Phone Number</div>
+        </div>
+        </div>
+        </div>
+        <br>
+        
+        <div class="Polaris-FormLayout__Items" style="display:flex;">
+          <div class="Polaris-FormLayout__Item">
+        
+       
+          
+           <b>Social Media Links</b>
+            <div id="PolarisPortalsContainer"></div>
+            </div>
+       
+          
+        </div>
+        <br>
+        <div class="Polaris-FormLayout__Items" style="display:flex;">
+          <div class="Polaris-FormLayout__Item">
+        <div class="">
+          <div class="PolarisPortalsContainer">
+            <center>
+              Facebook Handle
+            </center>
+          </div>
+          <div >
+            <div class="Polaris-Connected_Item Polaris-Connected_Item--primary">
+              <div class="Polaris-TextField Polaris-TextField--hasValue">
+                <input id="fbHandle" class="Polaris-TextField__Input" aria-labelledby="PolarisTextField8Label" aria-invalid="false" aria-multiline="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+          </div>
+        <br>
+            <div class="Polaris-FormLayout__Item">
+         <div class="">
+          <div class="PolarisPortalsContainer">
+            <center>
+              Instagram Handle
+            </center>  
+          </div>
+          <div>
+            <div class="Polaris-Connected_Item Polaris-Connected_Item--primary">
+              <div class="Polaris-TextField Polaris-TextField--hasValue">
+                <input id="InstaHandle" class="Polaris-TextField__Input" aria-labelledby="PolarisTextField8Label" aria-invalid="false" aria-multiline="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+        <br>
+
+      </div>
+      <div class="Polaris-Card__Footer" style="justify-content: center;">
+        <div class="Polaris-ButtonGroup">
+          <div class="Polaris-ButtonGroup__Item">
+            <button id="signupbtn" style="width:12em" type="button" class="Polaris-Button Polaris-Button--primary" onclick="submitDetails()">
+              <span class="Polaris-Button__Content">
+                <span class="btn-txt">Save Details</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div style="justify-content: center;display:flex;margin-top: -1em;">
+        <span style="display:none; font-size: larger;" id="successmsg" class="Polaris-TextStyle--variationPositive">Your request has been successfully registered, you will soon receive account activation E-mail once our admin approves your request.</span>
+        <span style="display:none" id="errorsmsg" class="Polaris-TextStyle--variationNegative">Error while saving the details. This user email may already have an account on the store.</span>  
+        <span style="display:none" id="RepExistErrorMsg" class="Polaris-TextStyle--variationNegative">This email is already registered as a rep.</span>  
+      </div>
+    </div>
+  </div>
+</body>

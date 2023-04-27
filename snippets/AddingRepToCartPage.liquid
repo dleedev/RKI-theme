@@ -1,0 +1,55 @@
+<div style="display:inline-flex;padding-bottom:1rem;">
+    <div class="Polaris-Labelled__LabelWrapper" style="align-self: center;">
+        <div class="Polaris-Label">
+            <label style="text-align: initial;margin-right:10px;font-size: 1rem;" id="selectRepsLabel" for="PolarisSelect2" class="Polaris-Label__Text">Who helped you?</label>
+        </div>
+    </div>
+    <div class="Polaris-Select">
+        <select id="repname" class="Polaris-Select__Input" aria-invalid="false" style="min-width: 10em;height: 2em;width: fit-content;padding: 0 0.2em !important;">
+        </select>
+    </div>
+</div>
+<p>Who helped you?</p>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+ $('#repname').change(function() {
+    var repId = $(this).val();
+    var data = 'attributes[rep]=' + repId;
+     $.ajax({
+       type: 'POST',
+       url: '/cart/update.js',
+       dataType: 'json',
+       data: data,
+       success: function (res) {
+         console.log("Added repId to cart note");
+       }
+     });
+});
+</script>
+<script>
+var array=[];
+    {% for rep in shop.metafields.SalesTeamApp %}
+        {%assign Id = rep[0]| modulo: 1000 %}
+        {%assign repId = rep[1].SalesRepName | remove:" " | append: Id %}
+              
+        array.push({
+            "RepId" :"{{repId}}" , 
+            "Name":  "{{rep[1].SalesRepName}} {{rep[1].SalesRepLastName}}"                
+        });
+    {%endfor%}
+    console.log(array);
+    array.sort((a,b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));   
+    $('#repname').append('<option value=""> No Sales Rep </option>'); 
+    for(var rep in array)
+    {
+        if(Reps[rep]["RepId"] != 0)
+        {
+            option = Reps[rep]["Name"]; 
+            value= Reps[rep]["RepId"];
+            $('#repnames').append('<option value='+ value+'> ' + option + ' </option>');  
+        }         
+    }                
+</script>
+

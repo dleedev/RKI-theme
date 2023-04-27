@@ -1,0 +1,146 @@
+<Style>
+  label {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+  
+
+input, select, textarea {
+    border: 0.5;
+    border-color: #919eab;
+    max-width: 100%;
+    padding: 8px 10px;
+    border-radius: 0;
+}
+</Style>
+
+
+
+
+<div class="index-section">
+  <div class="page-width">
+
+    <div class="grid">
+      <div class="grid__item{% if section.settings.narrow_column %} medium-up--three-quarters medium-up--push-one-eighth{% endif %}">
+
+        {%- if section.settings.title != blank -%}
+          <div class="section-header">
+          
+            <h4>PLEASE COMPLETE THE FORM BELOW</h4>
+          </div>
+        {%- endif -%}
+<div class="form-wrapper">
+  
+        <div class="form-inner-wrapper">
+          {%- assign form_id = 'contact-' | append: section.id -%}
+          {%- form 'contact', id: form_id -%}
+
+            {%- if form.posted_successfully? -%}
+              <p class="note note--success">
+                {{ 'contact.form.post_success' | t }}
+              </p>
+            {%- endif -%}
+
+            {{ form.errors | default_errors }}
+<div class="form-group" style="display:inline-block; width:48%;padding-right: 5%;">
+                <label for="ContactFormName-{{ section.id }}">First Name</label>
+                <input type="text" id="ContactFirstName-{{ section.id }}" class="input-full" name="contact[firstname]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+<div class="form-group" style="display:inline-block; width:48%; padding-left: 5%;">
+                <label for="ContactFormName-{{ section.id }}">Last Name</label>
+                <input type="text" id="ContactlastName-{{ section.id }}" class="input-full" name="contact[lastname]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+          </div>
+<div class ="col-md-4">
+                <label for="ContactStoreName-{{ section.id }}">Store Name</label>
+                <input type="text" id="ContactFirstName-{{ section.id }}" class="input-full" name="contact[firstname]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+<div class ="col-md-4">
+                <label for="ContactFormEmail-{{ section.id }}">Email</label>
+                <input type="email" id="ContactEmail-{{ section.id }}" class="input-full" name="contact[email]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+
+              <div class="col-md-4">
+                <label for="ContactFormPhone-{{ section.id }}">Phone Number</label>
+                <input type="tel" id="ContactPhone-{{ section.id }}" class="input-full" name="contact[phone]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+              <div class="col-md-4">
+                <label for="ContactFormCity-{{ section.id }}">City/State</label>
+                <input type="text" id="ContactCity-{{ section.id }}" class="input-full" name="contact[city]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+  
+
+              <div class="col-md-4">
+                <label>How long have you been in business for? *
+</label>
+                <input type="text" id="Contacthowlong-{{ section.id }}" class="input-full" name="contact[howlong]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+            <div class="col-md-4">
+                <label for="ContactFormbrands-{{ section.id }}">What other brands does your store carry? *</label>
+                <input type="text" id="Contactbrands-{{ section.id }}" class="input-full" name="contact[brands]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+ <div class="col-md-4">
+                <label for="ContactFormStore-{{ section.id }}">Store Type *</label>
+                <input type="text" id="Contactstore-{{ section.id }}" class="input-full" name="contact[store]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+ <div class="col-md-4">
+                <label for="ContactFormmessage-{{ section.id }}">message*</label>
+    <textarea
+                    class="field-element "
+                    id="textarea-yui_3_17_2_1_1569463971411_577529-field"
+                    
+                    aria-required="true"rows="4" cols="50"
+                ></textarea>              </div>
+    <div class="row">
+            <button type="submit" class="btn">
+              {{ 'contact.form.send' | t }}
+            </button>
+          </div>
+            {% comment %}
+              Remove the following three lines of code to remove the note
+              about being protected by Google's reCAPTCHA service.
+              By removing it, the small reCAPTCHA widget will appear in the
+              bottom right corner of the page.
+            {% endcomment %}
+            {{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}
+
+          {%- endform -%}
+        </div>
+    
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Contact form",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "All submissions are sent to the customer email address of your store. [Learn more](https://help.shopify.com/en/manual/using-themes/change-the-layout/add-contact-form#view-contact-form-submissions)."
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Contact us"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_phone",
+        "label": "Show phone number"
+      },
+      {
+        "type": "checkbox",
+        "id": "narrow_column",
+        "label": "Narrow column",
+        "default": true
+      }
+    ],
+    "presets": [{
+      "name": "Contact form",
+      "category": "Store information"
+    }]
+  }
+{% endschema %}

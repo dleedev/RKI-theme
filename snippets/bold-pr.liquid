@@ -1,0 +1,31 @@
+<script id="bold-platform-data" type="application/json">
+    {
+        "shop": {
+            "domain": "{{ shop.domain }}",
+            "permanent_domain": "{{ shop.permanent_domain }}",
+            "url": "{{ shop.url }}",
+            "secure_url": "{{ shop.secure_url }}",
+            "money_format": {{ shop.money_format | json }},
+            "currency": {{ shop.currency | json }}
+        },
+        "customer": {
+            "id": {{ customer.id | json }},
+            "tags": {{ customer.tags | json }}
+        },
+        "cart": {{ cart | json }},
+        "template": "{{ template | split: "." | first }}",
+        "product": {{ product | json }},
+        "collection": {{ collection.products | json }}
+    }
+</script>
+<style>
+    .money[data-product-id], .money[data-product-handle], .money[data-variant-id], .money[data-line-index], .money[data-cart-total] {
+        animation: moneyAnimation 0s 2s forwards;
+        visibility: hidden;
+    }
+    @keyframes moneyAnimation {
+        to   { visibility: visible; }
+    }
+</style>
+
+<script src="https://static.boldcommerce.com/bold-platform/sf/pr.js" defer></script>

@@ -1,0 +1,2228 @@
+<script>
+function OpenNav(){
+    if(window.innerWidth < 800)
+    {
+        $("#AppFrameNav").toggle(275);
+        $('#AppFrameNav').css('height', window.innerHeight+'px');
+        $('#AppFrameMain').css('margin', '0px');
+        $('#AppFrameMain').css('height', '100%');
+    }
+    
+}
+ 
+
+var loadScript = function(url, callback){
+var script = document.createElement("script");
+  script.type = "text/javascript";
+
+  // If the browser is Internet Explorer.
+  if (script.readyState){ 
+    script.onreadystatechange = function(){
+      if (script.readyState == "loaded" || script.readyState == "complete"){
+        script.onreadystatechange = null;
+        callback();
+      }
+    };
+  // For any other browser.
+  } else {
+    script.onload = function(){
+      callback();
+    };
+  }
+  script.src = url;
+  document.getElementsByTagName("head")[0].appendChild(script);
+};
+    function HideNav()
+    {   
+       if(window.innerWidth < 800)
+       $("#AppFrameNav").toggle(275);
+    }
+
+ function LoadSRClickHandlers($){
+      
+   $("#dash_card").css('display','flex');
+   $("#dash_card").css('flex-wrap','wrap');
+   $('#dash').css('display','flex');
+   $(".card").css('margin-right', '20px');  
+   $(".card").css('max-width', '20em');
+   $(".card").css('width', 'max-content');
+
+   var navigationIcon = '<div class="Polaris-TopBar" style="background-color: #f4f6f8;">'+
+     '<button type="button" class="Polaris-TopBar__NavigationIcon" aria-label="Toggle menu" onclick="OpenNav()">'+
+       '<span class="Polaris-Icon Polaris-Icon--colorWhite">'+
+         '<svg class="Polaris-Icon__Svg" viewBox="0 0 32 32" focusable="false" aria-hidden="true" style="fill: black;">'+
+           '<path d="M30.4 17.6H1.6a1.6 1.6 0 1 1 0-3.2h28.8a1.6 1.6 0 1 1 0 3.2zm0-11.2H1.6a1.6 1.6 0 1 1 0-3.2h28.8a1.6 1.6 0 1 1 0 3.2zm0 22.4H1.6a1.6 1.6 0 1 1 0-3.2h28.8a1.6 1.6 0 1 1 0 3.2z"></path>'+
+        '</svg>'+
+       '</span>'+
+    '</button>'+            
+  '</div>';
+           
+   $(navigationIcon).prependTo( ".Polaris-Page-Header__Title");
+   $(".Polaris-Page-Header__Title").css('display','flex');
+   $(".Polaris-Page-Header__Title div:last-child").css('margin','auto 1rem');
+
+
+   $('#CreateInvoice').hide();
+   $('#CustomDiscount').hide();
+      
+    $("#loadGif").show();   
+    $("#SR_Dashboard").hide();
+    $("#SR_CustomerOrder").hide();
+    $("#SR_Wholesale").hide();
+    $("#SR_ViewCustomerOrder").hide();        
+    $("#SR_Discount").hide();
+    $("#SR_YourBio").hide(); 
+    $("#SR_TeamDetails").hide(); 
+    $("#SR_Lead").hide();
+    $("#SR_Clients").hide();  
+    $("#SR_PreviousOrder").hide();
+    $("#SR_MyOrder").hide();
+    $("#SR_SharedCart").hide();
+  
+     var ShowHideTabs = function (tabToShow) {
+         HideNav();
+         var tabListArray = ["#SR_Dashboard", "#SR_CustomerOrder", "#SR_ViewCustomerOrder", "#SR_Wholesale", "#SR_Discount", "#SR_YourBio", "#SR_TeamDetails", "#SR_Lead", "#SR_Clients", "#SR_PreviousOrder", "#SR_MyOrder", "#SR_SharedCart"];
+         for (i = 0; i < tabListArray.length; i++) {
+             $(tabListArray[i]).hide();
+         }
+         $(tabToShow).show(300);
+     }
+
+     // setting up header click handlers:
+     $("#Dashboard").click(function () {
+         ShowHideTabs("#SR_Dashboard");
+     });
+
+     $("#sr_Wholesale_head").click(function () {
+         ShowHideTabs("#SR_Wholesale");
+     });
+
+     $("#sr_CustomerOrder_head").click(function () {
+         ShowHideTabs("#SR_CustomerOrder");
+     });
+
+     $("#sr_Affiliate_head").click(function () {
+         ShowHideTabs("#SR_ViewCustomerOrder");
+     });
+
+     $("#sr_Discount_head").click(function () {
+         ShowHideTabs("#SR_Discount");
+     });
+
+     $("#sr_Yourbio_head").click(function () {
+         ShowHideTabs("#SR_YourBio");
+     });
+
+     $("#sr_Team_head").click(function () {
+         ShowHideTabs("#SR_TeamDetails");
+     });
+
+     $("#sr_Lead_head").click(function () {
+         ShowHideTabs("#SR_Lead");
+     });
+
+     $("#sr_Clients_head").click(function () {
+         ShowHideTabs("#SR_Clients");
+     });
+
+     $("#sr_PreviousOrder_head").click(function () {
+         ShowHideTabs("#SR_PreviousOrder");
+     });
+     $("#sr_MyOrders_head").click(function () {
+         ShowHideTabs("#SR_MyOrder");
+     });
+
+     $("#sr_SharedCart_head").click(function () {
+         ShowHideTabs("#SR_SharedCart");
+     }); 
+  
+  }
+  </script>
+   
+<style> 
+    table{
+        margin-bottom: 0px;
+    }
+    
+   .Polaris-Card{
+      margin-top: 2rem;
+   }
+     
+   .Polaris-DataTable__Cell--header {
+      font-weight: 700 !important;
+    }
+    
+    .Polaris-DataTable__Cell--numeric {
+       text-align: left !important;
+     } 
+
+  .Card-Bottom-Margin{
+      min-width: 10em !important;
+      margin: 2rem 0 2rem 0;
+  }
+
+  .Header-Padding{
+      padding: 2rem 0rem 0;
+  }
+  
+  #custnamelist {
+    display : none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  #custnamelist li a {
+    line-height: 0rem;
+    border: 1px solid #ddd;
+    margin-top: -1px;
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+    font-size: small;
+  }
+  #custnamelist li a:hover:not(.header) {
+    background-color: #eee;
+  }
+  
+  @media screen and (max-width:500px){
+   .card{
+    width : 20em !important; 
+   }
+  }
+  
+   .minus, .plus{
+    background:#f2f2f2;
+    padding:8px 5px 10px 5px;
+    border:1px solid #ddd;
+    display: inline-block;
+    text-align: center;
+    width:1.5em;
+  }
+  
+  .removeIcon{
+   max-width:none; 
+  }
+
+   .tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #FFFF;
+  border:none;
+  margin-left: 3.5rem;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 200px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #FFFF;
+  border-bottom: 3px solid #DEE;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #FFFF;
+  border-bottom: 3px solid gray;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+ #scrollToTop {
+  display: none; 
+  position: fixed; 
+  bottom: 47.3rem; 
+  right: 3.5rem; 
+  z-index: 99; 
+  border: none;
+  outline: none;
+  background-color: #ddd; 
+  color: white; 
+  cursor: pointer; 
+  padding: 15px; 
+  border-radius: 30px; 
+  font-size: 18px; 
+}
+
+#scrollToTop:hover {
+  background-color: darkseagreen; 
+}
+  .hide{
+  display:none;
+  }
+</style>
+
+
+<div id="modalDialog" style="display:none">
+  <div>
+    <div class="Polaris-Modal-Dialog__Container undefined" style="justify-content: unset !important;margin: 2em;"data-polaris-layer="true" data-polaris-overlay="true">
+      <div>
+        <div role="dialog" aria-labelledby="modal-header4" tabindex="-1" class="Polaris-Modal-Dialog">
+          <div class="Polaris-Modal-Dialog__Modal" style="max-width: 100%;width:auto">
+            <div class="Polaris-Modal-Header">
+              <div id="modal-header4" class="Polaris-Modal-Header__Title">
+                <h2 id="popupTitle" class="Polaris-DisplayText Polaris-DisplayText--sizeSmall"></h2>
+              </div><button id="closeModal" onclick="closeModal()" class="Polaris-Modal-CloseButton" aria-label="Close"><span class="Polaris-Icon Polaris-Icon--colorInkLighter Polaris-Icon--isColored"><svg viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true">
+              <path d="M11.414 10l6.293-6.293a.999.999 0 1 0-1.414-1.414L10 8.586 3.707 2.293a.999.999 0 1 0-1.414 1.414L8.586 10l-6.293 6.293a.999.999 0 1 0 1.414 1.414L10 11.414l6.293 6.293a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414L11.414 10z" fill-rule="evenodd"></path>
+              </svg></span></button>
+            </div>
+            <div class="Polaris-Modal__BodyWrapper">
+              <div style="padding: 15px;" id="modalContent" class="Polaris-Modal__Body Polaris-Scrollable Polaris-Scrollable--vertical Polaris-Scrollable--hasBottomShadow Polaris-Scrollable--verticalHasScrolling" data-polaris-scrollable="true">
+                <div id="orderAmountDetailsOnPopup" style="display:none;display:flex;">
+                  <table class="Polaris-DataTable__Table" style="margin-bottom: 20px;">
+                    <tbody>
+                     <tr>
+                        <td style="width: 9rem;border: none;padding-top: 0;">
+                          <p><b>SubTotal: <span id="OrdersSubtotal"></span></b></p>
+                          <p><b>Total: <span id="OrderTotal"></span></b></p>
+                          <p><b>Note:</b> <span id="orderNote"></span></p>
+                       </td>
+                       <td style="width: 26rem;border: none;padding-top: 22px;">
+                          <p><b>Shipping Cost: <span id="OrdersShipping"></span></b></p>
+                          <p><b>Tax: <span id="OrdersTax"></span></b></p>
+                          <p>&emsp;</p>
+                          <p>&emsp;</p>
+                       </td>
+                     </tr>
+                    </tbody>
+                  </table>
+                </div>
+        <center>
+                  <div id="PopuploadGif" style="display:none;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);"><svg viewBox="0 0 44 44" class="Polaris-Spinner Polaris-Spinner--colorTeal Polaris-Spinner--sizeLarge" role="status">
+                    <path d="M15.542 1.487A21.507 21.507 0 0 0 .5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 0 0-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 1 0-.9-2.863z"></path>
+                  </svg></div>
+                </center>
+                <div class="Polaris-DataTable">
+                  <div class="Polaris-DataTable" style="max-height:30em">
+                    <table class="Polaris-DataTable__Table" id="ViewProductModel" style="border-top: 1px solid #ddd;">
+                    </table>
+                  </div>
+                </div>
+                <br/>
+        
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="Polaris-Backdrop"></div>
+</div>
+
+<!--Spinner-->
+<center>
+  <div id="loadGif" style="margin-top: 5em;display:none;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);"><svg viewBox="0 0 44 44" class="Polaris-Spinner Polaris-Spinner--colorTeal Polaris-Spinner--sizeLarge" role="status">
+    <path d="M15.542 1.487A21.507 21.507 0 0 0 .5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 0 0-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 1 0-.9-2.863z"></path>
+  </svg></div>
+</center>
+
+<!--SalesRep App-->
+
+<div id="SR_App" style="display:none;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);">  
+    <div class="Polaris-Frame Polaris-Frame--hasNav Polaris-Frame--hasTopBar" data-polaris-layer="true" data-has-navigation="true">
+        <!--Nav bar-->
+       <div class="Polaris-Frame__Navigation" id="AppFrameNav" style="top: 2em !important;position: relative;">
+            <nav class="Polaris-Navigation" style="width: 24rem !important; min-width: 0 !important;">
+              <div class="Polaris-Navigation__UserMenu"></div>
+              <ul class="Polaris-Navigation__Section">
+                <li class="Polaris-Navigation__ListItem">
+                  <span class="Polaris-Navigation-UserMenu__Avatar" style="margin-left: 10px;">
+                    <div class="Polaris-MessageIndicator__MessageIndicatorWrapper"><span aria-label="Avatar with initials D" role="img" class="Polaris-Avatar Polaris-Avatar--styleThree Polaris-Avatar--sizeSmall">
+                      <span class="Polaris-Avatar__Initials"><svg class="Polaris-Avatar__Svg" viewBox="0 0 48 48"><text x="50%" y="50%" dy="0.35em" fill="currentColor" font-size="26" text-anchor="middle">{{customer.first_name| slice: 0 }}</text></svg></span></span></div>
+                  </span>
+                  <span class="Polaris-Navigation-UserMenu__Details" style="margin-top: 10px;margin-left: 10px;">
+                    <span class="Polaris-Navigation-UserMenu__Detail">{{customer.first_name}}</span></span>
+                </li>
+              </ul>
+
+              <div class="Polaris-Navigation__PrimaryNavigation Polaris-Scrollable Polaris-Scrollable--vertical" data-polaris-scrollable="true" polaris="[object Object]">
+
+                <ul class="Polaris-Navigation__Section Polaris-Navigation__Section--withSeparator">
+
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="Dashboard">
+                    <div class="Polaris-Navigation__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                      <path d="M19.664 8.252l-9-8a1 1 0 0 0-1.328 0L8 1.44V1a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v5.773L.336 8.252a1.001 1.001 0 0 0 1.328 1.496L2 9.449V19a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9.449l.336.299a.997.997 0 0 0 1.411-.083 1.001 1.001 0 0 0-.083-1.413zM16 18h-2v-5a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v5H4V7.671l6-5.333 6 5.333V18zm-8 0v-4h4v4H8zM4 2h2v1.218L4 4.996V2z" fill-rule="evenodd"></path>
+                      </svg></span></div><span class="Polaris-Navigation__Text">Dashboard</span>
+                    </button>
+                  </li>
+
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_CustomerOrder_head">
+                    <div class="Polaris-Navigation__Icon"><img style="filter: brightness(0.3);" src="{{ 'customericon.png' | asset_url }}"/></div><span class="Polaris-Navigation__Text">Customer Invoice</span>
+                    </button>
+                  </li>
+
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_Wholesale_head">
+                    <div class="Polaris-Navigation__Icon"><img style="filter: brightness(0.3);" src="{{ 'wholesaleicon.png' | asset_url }}"/></div><span class="Polaris-Navigation__Text">Wholesale Order</span>
+                    </button></li>
+                  
+                    <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_Affiliate_head">
+                      <div class="Polaris-Navigation__Icon"><img style="filter: brightness(0.3);" src="{{ 'affiliateicon.png' | asset_url }}"/></div><span class="Polaris-Navigation__Text">Affiliate Link</span>
+                      </button>
+                    </li>
+
+                    <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_SharedCart_head">
+                      <div class="Polaris-Navigation__Icon"><img style="" src="{{ 'cartsharing.svg' | asset_url }}"/></div><span class="Polaris-Navigation__Text">Cart Sharing</span>
+                    </button></li>
+
+                    <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_Discount_head">
+                      <div class="Polaris-Navigation__Icon"><div class="p_2IX94"><span class="p_2-hnq"><svg class="p_v3ASA" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                        <g  fill-rule="evenodd">
+                        <path d="M7.742 17.655a2.205 2.205 0 0 0-1.558-.646h-.991a2.202 2.202 0 0 1-2.202-2.202v-.991c0-.584-.233-1.145-.646-1.558l-.7-.7a2.203 2.203 0 0 1 0-3.115l.7-.7c.413-.413.646-.974.646-1.558v-.991c0-1.216.986-2.202 2.202-2.202h.991c.584 0 1.145-.233 1.558-.646l.7-.7c.86-.86 2.255-.86 3.115 0l.7.7c.414.413.974.646 1.558.646h.991c1.216 0 2.202.986 2.202 2.202v.991c0 .584.233 1.145.646 1.558l.7.7c.86.86.86 2.255 0 3.115l-.7.7a2.205 2.205 0 0 0-.646 1.558v.991a2.202 2.202 0 0 1-2.202 2.202h-.991c-.584 0-1.144.233-1.558.646l-.7.7c-.86.86-2.255.86-3.115 0l-.7-.7z" fill="currentColor"/><path d="M19.06 7.734l-.7-.7a1.217 1.217 0 0 1-.353-.851v-.991a3.206 3.206 0 0 0-3.203-3.202h-.99c-.32 0-.623-.125-.85-.353l-.7-.7a3.207 3.207 0 0 0-4.53 0l-.7.7c-.229.228-.53.353-.852.353h-.99A3.206 3.206 0 0 0 1.99 5.192v.99c0 .317-.129.628-.352.852l-.7.7a3.207 3.207 0 0 0 0 4.529l.7.7c.223.224.352.534.352.85v.992a3.206 3.206 0 0 0 3.203 3.202h.99c.321 0 .623.125.851.353l.7.7a3.192 3.192 0 0 0 2.265.936c.82 0 1.64-.312 2.265-.936l.7-.7c.228-.228.53-.353.851-.353h.99a3.206 3.206 0 0 0 3.203-3.202v-.991c0-.317.13-.627.352-.851l.702-.7a3.208 3.208 0 0 0 0-4.53M12.288 6.29l-6 6a.999.999 0 1 0 1.414 1.414l6-6A.999.999 0 1 0 12.29 6.29M7.496 8.996a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m5 2a1.5 1.5 0 1 0 .001 3.001 1.5 1.5 0 0 0 0-3m5.15-.148l-.702.7a3.181 3.181 0 0 0-.938 2.265v.99c0 .664-.539 1.203-1.203 1.203h-.99a3.18 3.18 0 0 0-2.265.939l-.7.7a1.205 1.205 0 0 1-1.702 0l-.7-.7a3.178 3.178 0 0 0-2.265-.94h-.99a1.203 1.203 0 0 1-1.203-1.201v-.991c0-.856-.333-1.66-.938-2.265l-.7-.7a1.203 1.203 0 0 1 0-1.701l.7-.7c.605-.605.938-1.41.938-2.265v-.991c0-.663.54-1.202 1.203-1.202h.99c.856 0 1.66-.333 2.265-.94l.7-.7a1.205 1.205 0 0 1 1.702 0l.7.7a3.18 3.18 0 0 0 2.265.94h.99c.664 0 1.203.539 1.203 1.202v.99c0 .856.333 1.66.938 2.266l.701.7a1.204 1.204 0 0 1 0 1.7" />
+                      </g></svg></span></div></div><span class="Polaris-Navigation__Text">Discount Coupon</span>
+                    </button>
+                  </li>
+
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_Yourbio_head">
+                    <div class="Polaris-Navigation__Icon">
+                      <div class="p_2IX94"><span class="p_2-hnq"><svg class="p_v3ASA" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+
+                        <g  fill-rule="evenodd"><path d="M10 13c-4 0-7 3-7 3l1 3h12l1-3s-3-3-7-3" fill="currentColor"/>
+                          <path d="M17.707 15.293a.999.999 0 0 1 .241 1.023l-1 3A.999.999 0 0 1 16 20H4a1 1 0 0 1-.949-.684l-1-3a.999.999 0 0 1 .242-1.023C2.427 15.158 5.635 12 10 12c4.364 0 7.572 3.158 7.707 3.293zM15.28 18l.562-1.687c-.92-.752-3.155-2.313-5.84-2.313-2.704 0-4.928 1.558-5.844 2.31L4.72 18h10.56zM10 2c1.654 0 3 1.346 3 3s-1.346 3-3 3-3-1.346-3-3 1.346-3 3-3zm0 8c2.757 0 5-2.243 5-5s-2.243-5-5-5-5 2.243-5 5 2.243 5 5 5" />
+                        </g></svg></span></div></div><span class="Polaris-Navigation__Text">Your Bio</span>
+                    </button>
+                  </li>  
+
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_Team_head">
+                    <div class="Polaris-Navigation__Icon">
+                      <img style="filter: brightness(0.3);" src="{{ 'affiliateicon.png' | asset_url }}"/></div><span class="Polaris-Navigation__Text">Team</span>
+                    </button>
+                  </li>    
+
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_Lead_head">
+                    <div class="Polaris-Navigation__Icon">
+                      <img style="filter: brightness(0.3);" src="{{ 'customericon.png' | asset_url }}"/></div><span class="Polaris-Navigation__Text">Add Customer</span>
+                    </button>
+                  </li> 
+
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_Clients_head">
+                    <div class="Polaris-Navigation__Icon">
+                      <img style="filter: brightness(0.3);" src="{{ 'customericon.png' | asset_url }}"/></div><span class="Polaris-Navigation__Text">My Customers</span>
+                    </button>
+                  </li> 
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_PreviousOrder_head">
+                    <div class="Polaris-Navigation__Icon">
+                      <img style="filter: brightness(0.3);" src="{{ 'affiliateicon.png' | asset_url }}"/></div><span class="Polaris-Navigation__Text">Your Sales-Order Details</span>
+                    </button>
+                  </li>
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="sr_MyOrders_head">
+                    <div class="Polaris-Navigation__Icon">
+                      <img style="filter: brightness(0.3);" src="{{ 'affiliateicon.png' | asset_url }}"/></div><span class="Polaris-Navigation__Text">My Orders</span>
+                    </button>
+                  </li>
+                  <li class="Polaris-Navigation__ListItem"><button type="button" class="Polaris-Navigation__Item" id="logout">
+                    <div class="Polaris-Navigation__Icon"></div>
+                    <span class="Polaris-Navigation__Text"><a href="/account/logout" style="color: #212b36;">Logout</a></span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+
+          </div>
+       <!--Main Frame -->       
+   <main class="Polaris-Frame__Main" id="AppFrameMain" data-has-global-ribbon="false" style="padding: 0.5em 0;">
+   <div class="Polaris-Frame__Content">
+     <div class="Polaris-Page" style="max-width: 140.8rem;">
+  
+<!-- Dashboard-->   
+              
+<div id="SR_Dashboard" style="display:none;">  
+ <div class="Polaris-Card Card-Bottom-Margin">
+    <div class="Polaris-Card__Header">
+      <h2 class="Polaris-Heading"> 
+        <div class="Polaris-Page-Header Header-Padding">
+            <div class="Polaris-Page-Header__Title">
+                 <div>
+                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">DASHBOARD</h1>
+                  </div>
+                           
+            </div>
+         </div>
+      </h2>
+    </div>
+    
+    <br>
+    <div style = "margin-left:20px;">
+    <h1 id = "welcome_msg" style ="font-size:16px;color: #fffff;letter-spacing: initial;font-weight: 400;"class="Polaris-Heading"></h1>
+    </div>
+    
+    <div class="Polaris-Card__Section">        
+          <div class="Polaris-Page__Content">
+              <!-- Page Content -->
+              <div class="page_content" id="dashboardpage">
+              <h2 id="dashheader"></h2>
+                 <div id="dash_card">            
+
+                        <div class="Polaris-Card card" style="height:100%;" id="ClientWidget">
+                          <div class="Polaris-Card__Header">
+                            <h2 class="Polaris-Heading Polaris-Link" onclick="ClickCustomerInvoice()">CLIENT INVOICE</h2>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Reports" class="Polaris-Subheading">EARNINGS</h3>
+                            </div>
+                            <p id="CustomerOrders_Earning"></p>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Summary" class="Polaris-Subheading">INVOICE SENT</h3>
+                            </div>
+                            <p id="CustomerOrders_Sent"></p>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Summary" class="Polaris-Subheading">INVOICE PAID</h3>
+                            </div>
+                            <p id="CustomerOrders_Paid"></p>
+                          </div>
+                        </div>
+
+                         <div class="Polaris-Card card" style="height:100%;" id="WholesaleWidget">
+                          <div class="Polaris-Card__Header">
+                            <h2 class="Polaris-Heading Polaris-Link" onclick="ClickWholesale()">WHOLESALE ORDERS</h2>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Reports" class="Polaris-Subheading">EARNINGS</h3>
+                            </div>
+                            <p id="WholesaleOrders_Earning"></p>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Summary" class="Polaris-Subheading">INVOICE SENT</h3>
+                            </div>
+                            <p id="WholesaleOrders_Sent"></p>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Summary" class="Polaris-Subheading">INVOICE PAID</h3>
+                            </div>
+                            <p id="WholesaleOrder_Paid"></p>
+                          </div>
+                        </div>
+
+
+                         <div class="Polaris-Card card" style="height:100%;" id="AffiliateWidget">
+                          <div class="Polaris-Card__Header">
+                            <h2 class="Polaris-Heading Polaris-Link" onclick="ClickAffiliate()">AFFILIATE ORDERS</h2>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Reports" class="Polaris-Subheading">EARNINGS</h3>
+                            </div>
+                            <p id="AffiliateOrders_Earning"></p>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Summary" class="Polaris-Subheading">ORDERS PAID</h3>
+                            </div>
+                            <p id="AffiliateOrders_Paid"></p>
+                          </div>
+                        </div>
+
+                        <div class="Polaris-Card card" style="height:100%;" id="CouponeCodeWidget">
+                          <div class="Polaris-Card__Header" >
+                            <h2 class="Polaris-Heading  Polaris-Link" onclick="ClickDiscount()">DISCOUNT COUPON</h2>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Reports" class="Polaris-Subheading">EARNINGS</h3>
+                            </div>
+                            <p id="DiscountCode_Earning"></p>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Summary" class="Polaris-Subheading">ORDERS PAID</h3>
+                            </div>
+                            <p id="DiscountCodeOrders_Paid"></p>
+                          </div>
+                        </div>
+
+                          <div class="Polaris-Card card" style="height:100%;" id="CustomerWidget">
+                          <div class="Polaris-Card__Header">
+                            <h2 class="Polaris-Heading Polaris-Link" onclick="ClickCustomerCommission()">CUSTOMER COMMISSION</h2>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Reports" class="Polaris-Subheading">COMMISSION</h3>
+                            </div>
+                            <p id="Customer_Commission"></p>
+                          </div>
+                           <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Reports" class="Polaris-Subheading">ORDERS</h3>
+                            </div>
+                            <p id="TagCustomerOrders_Paid"></p>
+                            </div>                         
+                        </div>
+
+                        <div class="Polaris-Card card" style="height:100%;" id="TeamleadWidget">
+                          <div class="Polaris-Card__Header">
+                            <h2 class="Polaris-Heading Polaris-Link" onclick="ClickTeamLeadCommission()">TEAM LEAD COMMISSION</h2>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Reports" class="Polaris-Subheading">COMMISSION</h3>
+                            </div>
+                            <p id="TeamLead_Commission"></p>
+                            </div>
+                        </div>
+                   
+                   <div class="Polaris-Card card" style="height:100%;" id="POSWidget">
+                          <div class="Polaris-Card__Header">
+                            <h2 class="Polaris-Heading Polaris-Link">POS COMMISSION</h2>
+                          </div>
+                          <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Reports" class="Polaris-Subheading">COMMISSION</h3>
+                            </div>
+                            <p id="POS_Commission"></p>
+                          </div>
+                           <div class="Polaris-Card__Section">
+                            <div class="Polaris-Card__SectionHeader">
+                              <h3 aria-label="Reports" class="Polaris-Subheading">COMMISSION</h3>
+                            </div>
+                            <p id="POSOrders_Paid"></p>
+                            </div>                         
+                        </div>
+
+                        </div>
+                      <br>
+                        
+                      <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">                         
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="orderTable">
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                 </div>
+              </div>
+          </div>
+  <br>
+  </div>
+ 
+<!--Client Invoice -->
+<button class="ToTop hide" onclick="scrollToTopFunction()" id="scrollToTop" title="Go to top">⇧</button> 
+<div id="SR_CustomerOrder" style="display:none;">
+  <div class="Polaris-Card Card-Bottom-Margin">
+    <div class="Polaris-Card__Header">
+      <h2 class="Polaris-Heading"> 
+        <div class="Polaris-Page-Header Header-Padding">
+                <div class="Polaris-Page-Header__Title">
+                  <div>
+                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Customer Invoices</h1>
+                  </div>
+                </div>
+         </div>
+      </h2>
+    </div>
+    <div class="Polaris-Card__Section">  
+         
+          <!--View Client Orders Page Content-->
+         
+          <!--View Client Orders Page Content--> 
+          <div class="page_content" id="clientorder">
+            <br/>              
+                <div>
+                  <label class="Polaris-Label__Text">Discount and Commission On: <br />
+                      <a style="color:#3f4eae !important; font-size: 15px;" id="discount_commission_on" target="_blank"></a></label> 
+                </div>
+                <br>
+                     <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="ClientInvoiceCommissionTable">
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+            <div id="VolumePricingData" style="display:none">
+              <br>
+              <div>
+                <div class="Polaris-ButtonGroup__Item">
+                  <button type="button" id="Order_btn" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="showClientInvoiceQuantityBaseDiscountTable()">
+                    <span class="Polaris-Button__Content">
+                      <span>Show/Hide Volume Pricing</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <br>
+              <div class="Polaris-Page__Content" style="display:none" id="qtybaseddiscounttable">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;max-height:30em">
+                                <table class="Polaris-DataTable__Table" id="ClientInvoiceQuantityBaseDiscountTable">
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+            </div>
+                <br>
+                <label class="Polaris-Label__Text">Add customer details and select products to send invoice.</label>
+              
+                <br/>   
+       
+                <div class="" >
+                    <div class="Polaris-Labelled__LabelWrapper">
+                      <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Customer Name: </label></div>
+                    </div>
+                 <div style="display:flex">
+                   <div style="z-index: 1;width:100%" class="Polaris-TextField Polaris-TextField--hasValue" style="width: 97%;">
+                     <input onkeyup="filterCustomerName()" id="sr_customer_fname" placeholder="Search by Customer Name" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                     <div class="Polaris-TextField__Backdrop"></div>
+                   </div>
+                   <button onclick="showAllCustNameList()" style="width:3rem;background-color: #e9e9e9;border-color: currentColor;">V</button>
+                 </div>
+              </div>
+            
+            <div id="customerfounderror" style="display:none">
+              <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label">
+                  <label id="isCustomerFound" for="TextField5" class="Polaris-Label__Text" style="color:red;">
+                    
+                  </label>
+                </div>
+               </div>
+            </div>
+
+            <div class="">
+              <ul class="custnamelist" id="custnamelist">
+              </ul>
+            </div>
+            
+                <div class="ProRep">
+                       <label class="Polaris-Choice" for="reppro"><span class="Polaris-Choice__Control"><span class="Polaris-Checkbox"><input id="reppro" type="checkbox" class="Polaris-Checkbox__Input" aria-invalid="false" role="checkbox" aria-checked="false" value="pro"><span class="Polaris-Checkbox__Backdrop"></span>
+                  <span class="Polaris-Checkbox__Icon"><span class="Polaris-Icon">
+                  <svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                  <path d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.437.437 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0"></path>
+                </svg></span></span></span></span><span class="Polaris-Choice__Label">Select checkbox to send pro invite</span></label>
+                </div>
+                 <br>
+             <div class="" style="display:none">
+                    <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="sr_customer_tags" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                      <div class="Polaris-TextField__Backdrop"></div>
+                    </div>
+                  </div>
+                  <div class="">
+                    <div class="Polaris-Labelled__LabelWrapper">
+                      <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Customer Email Id: </label></div>
+                    </div>
+                    <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="sr_customer_email" placeholder="Email Address" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                      <div class="Polaris-TextField__Backdrop"></div>
+                    </div>
+                  </div>
+                  <div class="" style="display:none">
+                    <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="sr_customer_id" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                      <div class="Polaris-TextField__Backdrop"></div>
+                    </div>
+                  </div>
+                <br>
+
+                <div class="">
+                  <div class="Polaris-Labelled__LabelWrapper">
+                    <div class="Polaris-Label"><label id="PolarisTextField6Label" for="PolarisTextField6" class="Polaris-Label__Text">Enter Custom Message: </label></div>
+                  </div>
+                  <div class="Polaris-Connected">
+                    <div class="Polaris-Connected__Item Polaris-Connected__Item--primary">
+                      <div class="Polaris-TextField Polaris-TextField--hasValue Polaris-TextField--multiline">
+                        <textarea id="sr_custom_message" placeholder="Custom Message" class="Polaris-TextField__Input" aria-labelledby="PolarisTextField6Label" aria-invalid="false" aria-multiline="true" style="height: 120px;"></textarea>
+                        <div class="Polaris-TextField__Backdrop"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+
+                <div class="Polaris-TextField">
+                        <div class="Polaris-TextField__Prefix" id="TextField2Prefix"><span class="Polaris-Icon Polaris-Icon--colorSkyDark Polaris-Icon--isColored"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                              <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8m9.707 4.293l-4.82-4.82A5.968 5.968 0 0 0 14 8 6 6 0 0 0 2 8a6 6 0 0 0 6 6 5.968 5.968 0 0 0 3.473-1.113l4.82 4.82a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414" fill-rule="evenodd"></path>
+                            </svg></span></div><input id="ProductSearchInput" placeholder="Search Products" class="Polaris-TextField__Input" aria-label="Search customers" aria-labelledby="TextField2Label TextField2Prefix" aria-invalid="false" value="">
+                        <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+                 
+             <br><center>
+                  <div id="clientSpinner" style="display:none;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);"><svg viewBox="0 0 44 44" class="Polaris-Spinner Polaris-Spinner--colorTeal Polaris-Spinner--sizeLarge" role="status">
+                    <path d="M15.542 1.487A21.507 21.507 0 0 0 .5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 0 0-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 1 0-.9-2.863z"></path>
+                  </svg></div>
+                </center>
+             <br>
+        
+              <div class="Polaris-Page" style="display:none;" id="clientinvoicetable">  
+                <div class="Polaris-Page__Content">
+                  <div class="Polaris-Card"  style="width: max-content !important;">
+                    <div class="">
+                      <div class="Polaris-DataTable__Navigation"><button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                  <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                </svg></span></span></span></button><button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                  <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                </svg></span></span></span></button></div>
+                      <div class="Polaris-DataTable">
+                        <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;overflow-y:scroll;;max-height: 82rem;">
+                          <table class="Polaris-DataTable__Table" id="clienttable" style="width:95rem;">                       
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <span class="Polaris-TextStyle--variationNegative" id="sr_customerOrder_error1" style="display:none;">
+               all customer fields are mandatory. Please enter the customer's  email and first name
+              </span> 
+                <br>
+                <p id="SalesRep_order" class="third" style="color: #3f4eae !important; font-size: 16px;"> </p>
+                <br>
+             <div id="CreateInvoice">
+               <div class="Polaris-ButtonGroup__Item">
+                 <button type="button" id="draft_btn" class="Polaris-Button Polaris-Button--primary" style="padding-left: 35px;padding-right: 35px;" onclick="DraftOrder()">
+                   <span class="Polaris-Button__Content"><span>Create Invoice</span></span></button></div>
+            </div>
+                <br>
+            <div id="CustomDiscount">
+               <div class="Polaris-ButtonGroup__Item">
+                 <button type="button" id="Customedraft_btn" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="CustomDiscountDraftOrder()">
+                   <span class="Polaris-Button__Content"><span>Create Invoice</span></span></button></div>
+            </div>
+                
+                <p id="productnotselect1" class="third"> </p>
+                <br>
+               <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="productTable">
+                                    
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+                 <p id="productAddedMsg" style="margin: 1rem !important;color: darkseagreen;"></p>
+          </div>
+    </div>
+ </div>
+  <br>
+</div>
+
+<!--Shared Cart-->         
+<div id="SR_SharedCart" style="display:none;">
+  <div class="Polaris-Card Card-Bottom-Margin">
+    <div class="Polaris-Card__Header">
+      <h2 class="Polaris-Heading"> 
+        <div class="Polaris-Page-Header Header-Padding">
+            <div class="Polaris-Page-Header__Title">
+                 <div>
+                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Shared Cart</h1>
+                  </div>
+                           
+            </div>
+         </div>
+      </h2>
+    </div>
+    
+    <div class="Polaris-Card__Section">  
+      <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="existingSharedCartDetails">
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                <br>
+            <div class="page_content">
+            <br>
+              <label class="Polaris-Label__Text"> To create a personalized sharable cart, add products to cart from storefront.Those products will be displayed on this page. </label>              
+             <br>  
+              <div class="">
+                    <div class="Polaris-Labelled__LabelWrapper">
+                      <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Cart Name: </label></div>
+                    </div>
+                    <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="sr_sharedcartname" placeholder="Cart name" class="Polaris-TextField__Input" aria-label="Cart name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                      <div class="Polaris-TextField__Backdrop"></div>
+                    </div>
+                  </div>
+                 <br>
+              <center>
+                  <div id="SharedCartSpinner" style="display:none;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);"><svg viewBox="0 0 44 44" class="Polaris-Spinner Polaris-Spinner--colorTeal Polaris-Spinner--sizeLarge" role="status">
+                    <path d="M15.542 1.487A21.507 21.507 0 0 0 .5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 0 0-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 1 0-.9-2.863z"></path>
+                  </svg></div>
+               </center>
+           <br>           
+        <div class="Polaris-Page" style="display:none;" id="SharedCarttable">  
+                <div class="Polaris-Page__Content">
+                  <div class="Polaris-Card">
+                    <div class="">
+                      <div class="Polaris-DataTable__Navigation"><button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                  <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                </svg></span></span></span></button><button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                  <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                </svg></span></span></span></button></div>
+                      <div class="Polaris-DataTable">
+                        <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                          <table class="Polaris-DataTable__Table" id="Carttable">                        
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <p id="productnotselectforcartsharing" class="third"> </p>
+               <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="sharedProdTable">
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>  
+              <br>  
+               <div class="Polaris-ButtonGroup__Item">
+                 <button type="button" id="cretecart_btn" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="createCart()">
+                   <span class="Polaris-Button__Content"><span>Create Cart</span></span></button>
+              </div>
+              <br>        
+                     <div class="Polaris-Page" style="display:none;" id="SharedCartProductTable">  
+                        <div class="Polaris-Page__Content">
+                          <div class="Polaris-Card">
+                            <div class="">
+                              <div class="Polaris-DataTable__Navigation"><button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                          <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                        </svg></span></span></span></button><button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                          <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                        </svg></span></span></span></button></div>
+                              <div class="Polaris-DataTable">
+                                <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                  <table class="Polaris-DataTable__Table" id="SharedCartProdtable" style="width: 124%;">                       
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+            </div>
+    </div>  
+</div>
+</div>
+
+<!--Wholesale Orders-->         
+<div id="SR_Wholesale" style="display:none;">
+
+  <div class="Polaris-Card Card-Bottom-Margin">
+    <div class="Polaris-Card__Header">
+      <h2 class="Polaris-Heading"> 
+        <div class="Polaris-Page-Header Header-Padding">
+                <div class="Polaris-Page-Header__Title">
+                  <div>
+                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Wholesale Order</h1>
+                  </div>
+                </div>
+              </div></h2>
+    </div>
+    <div class="Polaris-Card__Section">  
+  
+            <div class="page_content">
+            <br>
+              <label class="Polaris-Label__Text">You can purchase products at special wholesale prices</label>
+                
+             <br>  
+              
+              <div id="WholesaleDiscountTableDiv">
+              <div>
+                <label class="Polaris-Label__Text">Discount On: <br />
+                    <a style="color:#3f4eae !important; font-size: 15px;" id="discount_on" target="_blank"></a></label> 
+              </div>
+              <br>
+              
+              <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="WholesaleDiscountTable">
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+              </div>
+              <br>
+              
+              <div id="WholesaleVolumePricingData" style="display:none">
+              <br>
+              <div>
+                <div class="Polaris-ButtonGroup__Item">
+                  <button type="button" id="Order_btn" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="showWholesaleQuantityBaseDiscountTable()">
+                    <span class="Polaris-Button__Content">
+                      <span>Show/Hide Volume Pricing</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <br>
+              <div class="Polaris-Page__Content" style="display:none" id="wholesaleqtybaseddiscounttable">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;max-height:30em">
+                                <table class="Polaris-DataTable__Table" id="WholesaleQuantityBaseDiscountTable">
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+            </div>
+                <br>
+              
+              <div class="Polaris-TextField">
+                    <div class="Polaris-TextField__Prefix" id="TextField2Prefix"><span class="Polaris-Icon Polaris-Icon--colorSkyDark Polaris-Icon--isColored"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                          <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8m9.707 4.293l-4.82-4.82A5.968 5.968 0 0 0 14 8 6 6 0 0 0 2 8a6 6 0 0 0 6 6 5.968 5.968 0 0 0 3.473-1.113l4.82 4.82a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414" fill-rule="evenodd"></path>
+                        </svg></span></div><input id="WholesaleProductSearchInput" placeholder="Search Product" class="Polaris-TextField__Input" aria-label="Search customers" aria-labelledby="TextField2Label TextField2Prefix" aria-invalid="false" value="">
+                    <div class="Polaris-TextField__Backdrop"></div>
+              </div>
+           
+            <br>
+              <center>
+                  <div id="wholesaleSpinner" style="display:none;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);"><svg viewBox="0 0 44 44" class="Polaris-Spinner Polaris-Spinner--colorTeal Polaris-Spinner--sizeLarge" role="status">
+                    <path d="M15.542 1.487A21.507 21.507 0 0 0 .5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 0 0-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 1 0-.9-2.863z"></path>
+                  </svg></div>
+               </center>
+           <br>
+                       
+        <div class="Polaris-Page" style="display:none;" id="wholesaleinvoicetable">  
+                <div class="Polaris-Page__Content">
+                  <div class="Polaris-Card">
+                    <div class="">
+                      <div class="Polaris-DataTable__Navigation"><button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                  <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                </svg></span></span></span></button><button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                  <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                </svg></span></span></span></button></div>
+                      <div class="Polaris-DataTable">
+                        <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                          <table class="Polaris-DataTable__Table" id="wholesaletable">                        
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <br>
+   
+                <p  id="SalesRepWholesale_order" class="third" style="color:rgba(0,149,136,1.0) !important;font-size: 14px;"> </p>
+                <br>
+                  
+                      <div class="Polaris-ButtonGroup__Item">
+                      <button type="button" id="draftWholesale_btn" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="DraftWholesaleOrder()">
+                      <span class="Polaris-Button__Content"><span>Check Out</span></span></button></div>
+                    <br>                        
+               <div><span id="totalPrice"></span><br><span id="DiscountedPrice"></span><br></div>
+    
+                <p id="productnotselect" class="third"> </p>
+              <br>
+                
+               <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="prodTable">
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+            </div>
+    </div>  
+</div>
+</div>
+      
+<!--Affiliate Orders -->      
+   
+<div id="SR_ViewCustomerOrder" style="display:none;">
+ <div class="Polaris-Card Card-Bottom-Margin">
+    <div class="Polaris-Card__Header">
+      <h2 class="Polaris-Heading"> 
+        <div class="Polaris-Page-Header Header-Padding">
+                <div class="Polaris-Page-Header__Title">
+                  <div>
+                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Affiliate Link</h1>
+                  </div>
+                </div>
+        </div>
+      </h2>
+    </div>
+    <div class="Polaris-Card__Section">  
+      
+      <!--View Affiliate Orders-->
+           <div class="page_content" id="View_AffiliateOrders" style="display:none;">      
+               <br/>
+               <div>
+                   <div class="Polaris-ButtonGroup__Item">
+                     <button type="button" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="BacktoAffiliatePage()">
+                       <span class="Polaris-Button__Content"><span>Back</span></span></button></div>
+               </div>
+
+                     <br/>
+                     <span class="Polaris-TextStyle--variationNegative" id="noaffiliateorder" style="display:none;">No Affiliate Orders</span>
+
+                 <div class="Polaris-Page__Content">
+                    <div class="Polaris-Card">
+                      <div class="">
+                        <div class="Polaris-DataTable__Navigation">
+                          <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                    <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                  </svg></span></span></span></button>
+                          <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                    <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                  </svg></span></span></span></button>
+                        </div>
+                        <div class="Polaris-DataTable">
+                          <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                            <table class="Polaris-DataTable__Table" id="AffiliateOrders">
+
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+               <br/>
+           </div>
+      
+        <!-- Affiliate Page -->
+          <div class="page_content" id="affiliateorder">            
+
+             </div>
+
+                <br/>
+                <br>
+                <label class="Polaris-Label__Text">
+                        Share your affiliate link on your social media and email. You will get an affiliate commission for every order from your affiliate link!
+                </label>
+                    <br />
+                    <div>
+                        <label class="Polaris-Label__Text">Your Affiliate Link: <br />
+                          <a style="color:#3f4eae !important; font-size: 15px;" id="affiliate_link" target="_blank"></a></label> 
+                    </div>
+                    <br />
+                <div>
+                  <label class="Polaris-Label__Text">Commission On: <br />
+                      <a style="color:#3f4eae !important; font-size: 15px;" id="commission_on" target="_blank"></a></label> 
+                </div>
+                <br>
+                    <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="AffiliateCommissionTable">
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <br>
+                    <br>
+                    <div>
+                         <a href="http://pinterest.com/pin/create/bookmarklet/?is_video=false&url={{shop.url}}?ambassador={{customer.first_name}}{{customer.id | modulo:1000}}" class="ssbp-btn ssbp-pinterest" rel="nofollow"  data-ssbp-url="{{shop.url}}?rep={{customer.first_name}}{{customer.id | modulo:1000}}" data-ssbp-site="Pinterest_force" target="_blank">
+                         <img src="https://simplesharebuttons.com/images/somacro/pinterest.png" alt="Pinterest" style="width:35px;"/> </a>
+                         <a href="http://instagram.com/###?ref={{shop.url}}?ambassador={{customer.first_name}}{{customer.id | modulo:1000}}" class="ig-b- ig-b-32"  target="_blank"><img src="https://badges.instagram.com/static/images/ig-badge-32.png" alt="Instagram"/></a>
+                         <a href="https://twitter.com/share?url={{shop.url}}?ambassador={{customer.first_name}}{{customer.id | modulo:1000}}&amp;text={{shop.name}}" target="_blank"><img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" style="width:35px;"/> </a>
+                         <a href="http://www.facebook.com/sharer.php?u={{shop.url}}?ambassador={{customer.first_name}}{{customer.id | modulo:1000}}" target="_blank"><img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" style="width:35px;"/></a>                 
+                    </div>                                  
+                    <br />
+                      <div class="Polaris-TextField">
+                        <div class="Polaris-TextField__Prefix" id="TextField2Prefix"><span class="Polaris-Icon Polaris-Icon--colorSkyDark Polaris-Icon--isColored"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                              <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8m9.707 4.293l-4.82-4.82A5.968 5.968 0 0 0 14 8 6 6 0 0 0 2 8a6 6 0 0 0 6 6 5.968 5.968 0 0 0 3.473-1.113l4.82 4.82a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414" fill-rule="evenodd"></path>
+                            </svg></span></div><input id="AffiliateProductSearchInput" placeholder="Search Product" class="Polaris-TextField__Input" aria-label="Search customers" aria-labelledby="TextField2Label TextField2Prefix" aria-invalid="false" value="">
+                        <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+                  
+               <br>
+                <center>
+                  <div id="affiliateSpinner" style="display:none;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);"><svg viewBox="0 0 44 44" class="Polaris-Spinner Polaris-Spinner--colorTeal Polaris-Spinner--sizeLarge" role="status">
+                    <path d="M15.542 1.487A21.507 21.507 0 0 0 .5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 0 0-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 1 0-.9-2.863z"></path>
+                  </svg></div>
+                </center>
+               <br>        
+                     <div class="Polaris-Page" style="display:none;" id="AffiliateProductTable">  
+                        <div class="Polaris-Page__Content">
+                          <div class="Polaris-Card">
+                            <div class="">
+                              <div class="Polaris-DataTable__Navigation"><button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                          <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                        </svg></span></span></span></button><button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                          <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                        </svg></span></span></span></button></div>
+                              <div class="Polaris-DataTable">
+                                <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                  <table class="Polaris-DataTable__Table" id="affiliatetable" style="width: 124%;">                       
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div> 
+       <br>        
+                        <div class="Polaris-Page__Content" style="display:none;" id="AffiliateCartProductTable">
+                          <div class="Polaris-Card">
+                            <div class="">
+                              <div class="Polaris-DataTable__Navigation"><button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                          <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                        </svg></span></span></span></button><button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                          <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                        </svg></span></span></span></button></div>
+                              <div class="Polaris-DataTable">
+                                <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                  <table class="Polaris-DataTable__Table" id="affiliateCartProdtable" style="width: 124%;">                       
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+          </div>
+     </div>
+   </div>
+       
+<!--Discount Coupon -->      
+   
+<div id="SR_Discount" style="display:none;height:100%">
+  <div class="Polaris-Card Card-Bottom-Margin">
+    
+     <!--View One Time Discount Coupon Page Content -->
+     <div class="page_content" id="View_DiscountCoupons" style="display:none;">
+            <div class="Polaris-Card__Header">
+              <h2 class="Polaris-Heading"> 
+                <div class="Polaris-Page-Header Header-Padding">
+                        <div class="Polaris-Page-Header__Title">
+                          <div>
+                            <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">One Time Discount Coupon</h1>
+                          </div>
+                        </div>
+                </div>
+              </h2>
+            </div>
+            <div class="Polaris-Card__Section">      
+
+               <br/>
+                 <div>
+                   <div class="Polaris-ButtonGroup__Item">
+                     <button type="button" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="BacktoCouponPage()">
+                       <span class="Polaris-Button__Content"><span> Back </span></span></button></div>
+                 </div>
+
+                     <br/>
+                   <span class="Polaris-TextStyle--variationNegative" id="nodiscountcoupon" style="display:none;">You have not created any Discount Coupon</span>         
+
+                 <div class="Polaris-Page__Content">
+                    <div class="Polaris-Card">
+                      <div class="">
+                        <div class="Polaris-DataTable__Navigation">
+                          <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                    <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                  </svg></span></span></span></button>
+                          <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                    <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                  </svg></span></span></span></button>
+                        </div>
+                        <div class="Polaris-DataTable">
+                          <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                            <table class="Polaris-DataTable__Table" id="OneTimeCoupons">
+
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+               <br/>
+               </div>       
+     </div>
+    
+      <!-- Discount Coupon Page Content -->
+     <div class="page_content" id="Discount_Coupon">
+              
+                <div class="Polaris-Card__Header">
+                  <h2 class="Polaris-Heading"> 
+                    <div class="Polaris-Page-Header Header-Padding">
+                            <div class="Polaris-Page-Header__Title">
+                              <div>
+                                <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Discount Coupon</h1>
+                              </div>
+                            </div>
+                    </div>
+                  </h2>
+                </div>
+              
+              <br>
+             <div class="Polaris-Card__Section">  
+                <label class="Polaris-Label__Text">
+                    Share your Discount Coupon Code on your social media and email. You will get a commission for everytime your Discount Coupon Code is used!
+                </label>
+                <br />
+                <div>
+                    <h5 class="affiliatelink">Your Coupon Code is: <span id="CouponCode" style="color:#3f4eae !important; font-size: 18px;"></span></h5>
+                    <br>
+                    <h5 class="affiliatelink">Discount Amount : <span id="dis_amt" style="color:#3f4eae !important; font-size: 18px;"></span></h5>
+                    <br>
+                    <h5 class="affiliatelink">Commision : <span id="com_amt" style="color:#3f4eae !important; font-size: 18px;"></span></h5>
+                    <br>
+                   <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="myInput" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                       <div class="Polaris-TextField__Backdrop"></div>
+                   </div>
+                    
+                   <div>
+                     <div class="Polaris-ButtonGroup__Item">
+                       <button type="button" id="btnmsg" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="myFunction()">
+                         <span class="Polaris-Button__Content"><span> Copy text</span></span></button></div>
+                   </div>
+                    
+                </div>
+                <br>
+                <div class="sr_body">
+                    <a href="http://pinterest.com/pin/create/bookmarklet/?is_video=false&url={{shop.url}}" class="ssbp-btn ssbp-pinterest" rel="nofollow"  data-ssbp-url="{{shop.url}}" data-ssbp-site="Pinterest_force" target="_blank"><img src="https://simplesharebuttons.com/images/somacro/pinterest.png" alt="Pinterest" style="width:35px;"/> </a>
+                    <a href="http://instagram.com/###?ref={{shop.url}}" class="ig-b- ig-b-32"  target="_blank" ><img src="https://badges.instagram.com/static/images/ig-badge-32.png" alt="Instagram" /></a>
+                    <a href="https://twitter.com/share?url={{shop.url}}&amp;text={{shop.name}}" target="_blank"><img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" style="width:35px;"/> </a>
+                    <a href="http://www.facebook.com/sharer.php?u={{shop.url}}" target="_blank"><img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" style="width:35px;"/></a>
+                </div>
+                <br>
+               </div>
+       </div>
+   </div>
+  
+     <!--One Time Discount Coupon Page Content -->
+    <div class="page_content" id="salesrepcoupon">
+         <div class="Polaris-Card">
+                  
+            <div class="Polaris-Card__Header">
+                  <h2 class="Polaris-Heading"> 
+                    <div class="Polaris-Page-Header Header-Padding">
+                            <div class="Polaris-Page-Header__Title">
+                              <div>
+                                <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Create one time use discount coupons for clients</h1>
+                              </div>
+                              <div></div>
+                            </div>
+                    </div>
+                  </h2>
+                </div>
+                    
+                  <br>
+                  <div class="Polaris-Card__Section">
+                   <div>
+                     <div class="Polaris-ButtonGroup__Item">
+                       <button type="button" id="Coupon_btn" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="ShowCouponTable()">
+                         <span class="Polaris-Button__Content"><span> View Coupons </span></span></button></div>
+                   </div>
+                
+                 <br/>
+                    <br/>
+                     <div>
+                        <h5 class="affiliatelink">Maximum allowed Discount : <span id="max_dis_amt" style="color:#3f4eae !important; font-size: 18px;"></span></h5>
+                        <br>
+                        <h5 class="affiliatelink">Commision : <span id="commission" style="color:#3f4eae !important; font-size: 18px;"></span></h5>
+                        <br>
+                     <div class="">
+                        <div class="Polaris-Labelled__LabelWrapper">
+                          <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Coupon Code: </label></div>
+                        </div>
+
+                        <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="DiscountCouponCode" placeholder="Please Enter Coupon Code" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                          <div class="Polaris-TextField__Backdrop"></div>
+                        </div>
+                      </div>
+                       <br>
+                      <div class="">
+                        <div class="Polaris-Labelled__LabelWrapper">
+                          <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Discount: </label></div>
+                        </div>
+
+                        <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="Discount" placeholder="Less than Max allowed Discount" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                          <div class="Polaris-TextField__Backdrop"></div>
+                        </div>
+                      </div>
+                       <span class="Polaris-TextStyle--variationNegative" id="sr_coupon_error1" style="display:none">Please enter the coupon code and discount</span> 
+                       <span class="Polaris-TextStyle--variationNegative" id="couponempty"></span>
+                        
+                       <br>
+                        <div>
+                           <div class="Polaris-ButtonGroup__Item">
+                             <button type="button" id="submit" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="CreateCoupon()">
+                               <span class="Polaris-Button__Content"><span>Create Coupon</span></span></button></div>
+                        </div>                          
+
+                  </div>
+                </div>
+            </div>
+       </div>
+
+  <br>
+</div>
+      
+<!--Your Bio-->      
+   
+<div id="SR_YourBio" style="display:none;">
+  <div class="Polaris-Card Card-Bottom-Margin">
+    <div class="Polaris-Card__Header">
+      <h2 class="Polaris-Heading"> 
+        <div class="Polaris-Page-Header Header-Padding">
+                <div class="Polaris-Page-Header__Title">
+                  <div>
+                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Your Bio</h1>
+                  </div>
+                </div>
+         </div>
+      </h2>
+    </div>
+    <div class="Polaris-Card__Section"> 
+    
+     <!-- Page Content -->
+           <div class="page_content" id="salesrepbio">      
+              <br>      
+              <br>
+              <div>
+
+              <div class="Polaris-Labelled__LabelWrapper">
+            <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Upload Profile</label></div>
+          </div>
+             <div style="display:inline">
+               <img id="profilePath" alt="Profile" height="200px" width="200px" style="border-radius:50%;" />
+               <div>
+                <input id="profilePicFile" type="file"  accept="image/*" /><br><br>
+                <button id="upload_btn" type="button" class="Polaris-Button Polaris-Button--primary" onclick="uploadProfilePic()">
+                  <span class="Polaris-Button__Content">
+                    <span class="Polaris-Button__Text">Upload</span>
+                  </span>
+                </button>
+               </div>
+             </div>
+                <br>
+
+        <div class="">
+          <div class="Polaris-Labelled__LabelWrapper">
+            <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Unique Link </label></div>
+          </div>
+        <span style="color:#3f4eae !important; font-size: 15px;" id="aff_link" target="_blank"></span>  
+          <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="uniquelink"  onkeyup="bioAffiliateLink(event)" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+            <div class="Polaris-TextField__Backdrop"></div>
+          </div>
+        </div>
+              <br>
+
+         <div class="">
+          <div class="Polaris-Labelled__LabelWrapper">
+            <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Your Bio</label></div>
+          </div>
+
+           <div class="Polaris-TextField Polaris-TextField--hasValue Polaris-TextField--multiline">
+                    <textarea id="repbio" class="Polaris-TextField__Input" placeholder="Enter in 100 words" aria-label="Shipping address" aria-labelledby="TextField14Label" aria-invalid="false" aria-multiline="true" style="height: 59px;"></textarea>
+                    <div class="Polaris-TextField__Backdrop"></div>
+          </div>
+          </div>
+              <br>
+              <br>
+             <h4 style="color: #f80000;display:none" id="error_link">This unique link may be taken. Try with different unique link.</h4>
+             <h4 style="color: darkseagreen; display:none" id="Linksuccessmsg">Unique link saved sucessfully.</h4>
+
+              <div>
+                 <div class="Polaris-ButtonGroup__Item">
+                   <button type="button" id="save_btn" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="SaveBio()">
+                     <span class="Polaris-Button__Content"><span> Save </span></span></button></div>
+               </div>
+
+
+           </div>
+      </div>
+    </div>
+</div>
+</div>
+              
+<!--Team Details-->
+
+<div id="SR_TeamDetails" style="display:none;">
+  <div class="Polaris-Card Card-Bottom-Margin">    
+    
+     <!--Team Details Page Content -->
+     <div class="page_content" id="teamdetails">       
+       <div class="Polaris-Card__Header">
+            <h2 class="Polaris-Heading"> 
+              <div class="Polaris-Page-Header Header-Padding">
+                      <div class="Polaris-Page-Header__Title">
+                        <div>
+                          <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Add SalesRep</h1>
+                        </div>
+                      </div>
+               </div>
+            </h2>
+         </div>
+                 
+        <div class="Polaris-Card__Section">
+         <div class="">
+            <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Email: <span style="color:red;font-weight:bold;">*</span></label></div>
+            </div>
+            <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="sr_salesrep_email" placeholder="Email Address" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="" required>
+                <div class="Polaris-TextField__Backdrop"></div>
+            </div>
+            <span style="color: #f80000;display:none" id="emailerror">Please enter email</span>
+         </div>
+         <br>
+         <div class="">
+            <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter First Name: <span style="color:red;font-weight:bold;">*</span></label></div>
+            </div>
+            <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="sr_salesrep_firstname" placeholder="First Name" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="" required>
+                <div class="Polaris-TextField__Backdrop"></div>
+            </div>
+            <span style="color: #f80000;display:none" id="fnameerror">Please enter first name</span>
+         </div>
+         <br>
+         <div class="">
+            <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Last Name: </label></div>
+            </div>
+            <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="sr_salesrep_lastname" placeholder="Last Name" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+            </div>
+         </div>
+         <br>
+
+         <div class="clearfix Polaris-ButtonGroup__Item">
+            <button type="button" id="addsalesrep" class="addsalesrepbtn Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="AddSalesRep()">
+            <span class="Polaris-Button__Content"><span>Add</span></span></button>
+         </div>
+         <h4 style="color: darkseagreen; display:none" id="successmsg">Added successfully! Please check your email for the activation instructions.</h4>
+         <h4 style="color: #f80000;display:none" id="errorsmsg">Error while adding. This user email may already have an account on the store.</h4>
+</div>
+       
+         <div class="Polaris-Card__Header">
+            <h2 class="Polaris-Heading"> 
+              <div class="Polaris-Page-Header Header-Padding">
+                      <div class="Polaris-Page-Header__Title">
+                        <div>
+                          <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Team Details</h1>
+                        </div>
+                      </div>
+               </div>
+            </h2>
+         </div>
+         <div class="Polaris-Card__Section">
+           <div>
+                        <label class="Polaris-Label__Text">Sign Up Page: <br />
+                          <a style="color:#3f4eae !important; font-size: 15px;" id="TeamSignUpPage" target="_blank"></a></label> 
+                    </div>
+              <br>
+                <span class="Polaris-TextStyle--variationNegative" id="NoTeamDetails" style="display:none;">No Team Details</span>
+                 <div>
+                    <div class="Polaris-Labelled__LabelWrapper">
+                        <div class="Polaris-Label"><label id="Select7Label" for="Select7" class="Polaris-Label__Text">Select SalesRep:</label></div>
+                      </div>                      
+                     <select id="repname" onmousedown="this.value='';" onchange="showTeamDetails(this);" style="width:100%;">
+
+                     </select>              
+                  </div> 
+
+             <br><br>
+           <h2 id="teamdata" style="display:none;"><b>LAST TWO MONTHS ORDER DETAILS</b></h2>
+           
+           <div class="Polaris-Page__Content" id="ClientOrderTeamMember" style="display:none;">
+             <center>
+                                  <div id="TeamOrderloadGif" style="display:none;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);"><svg viewBox="0 0 44 44" class="Polaris-Spinner Polaris-Spinner--colorTeal Polaris-Spinner--sizeLarge" role="status">
+                                    <path d="M15.542 1.487A21.507 21.507 0 0 0 .5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 0 0-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 1 0-.9-2.863z"></path>
+                                  </svg>
+                            </div>
+                                </center>
+           <div class="Polaris-Card">
+            <div class="">
+                <div class="Polaris-DataTable__Navigation">
+                    <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                    <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                    </svg></span></span></span></button>
+                    <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                    <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                    </svg></span></span></span></button>
+                </div>
+                <div class="Polaris-DataTable">
+                    <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                        <table class="Polaris-DataTable__Table" id="TeamManagerOrders">
+                            <tr>
+                                <th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric number" scope="col" style="height: 54px;">Order Number</th>
+                                <th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric date" scope="col" style="height: 54px;">Order Date</th>
+                                <th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric name" scope="col" style="height: 54px;">Customer Name</th> 
+                                <th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric name" scope="col" style="height: 54px;">Sales Rep</th>
+                                <th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric total" scope="col" style="height: 54px;">SubTotal</th>
+                                <th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric commission" scope="col" style="height: 54px;">Sales Rep Commission </th>
+                                <th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric type" scope="col" style="height: 54px;">Team Manager Commission  </th>
+                                <th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric name" scope="col" style="height: 54px;">Commission Type</th>
+                            </tr>
+
+                        </table>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+       </div>
+           
+        </div>  
+     </div>
+  </div>
+</div> 
+
+ <!--Add Customer Lead -->
+<div id="SR_Lead" style="display:none;">
+  <div class="Polaris-Card Card-Bottom-Margin">
+    <div class="Polaris-Card__Header">
+      <h2 class="Polaris-Heading"> 
+        <div class="Polaris-Page-Header Header-Padding">
+                <div class="Polaris-Page-Header__Title">
+                  <div>
+                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Add Customer</h1>
+                  </div>
+                </div>
+         </div>
+      </h2>
+    </div>
+    
+    <div class="Polaris-Card__Section" style="padding-left: 0;">       
+        <div role="group" class="Polaris-FormLayout--condensed">
+          <div class="Polaris-FormLayout__Items">
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+              <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Customer First name  <span style="color:red;font-weight:bold;">*</span> </label></div>
+                </div>
+               <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="customer_fname" placeholder="First Name" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+            </div>
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+                <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Customer Last name  </label></div>
+                </div>
+               <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="customer_lname" placeholder="Last Name" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+            </div>
+           </div>
+         </div>
+
+      <div role="group" class="Polaris-FormLayout--condensed">
+          <div class="Polaris-FormLayout__Items">
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+                 <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Enter Customer Email Id <span style="color:red;font-weight:bold;">*</span> </label></div>
+               </div>
+              <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="customer_email" placeholder="Email Address" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                 <div class="Polaris-TextField__Backdrop"></div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       <div class="Polaris-FormLayout__Items">
+         <div class="Polaris-FormLayout__Item">
+           <div class="">
+               <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Note </label></div>
+                </div>
+               <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="customer_note" placeholder="Note" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+           </div>
+         </div>
+      </div>       
+
+    <div class="Polaris-Card__Section" style="padding-left: 0;"> 
+         <div role="group" class="Polaris-FormLayout--condensed">
+          <div class="Polaris-FormLayout__Items">
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+                <div class="">
+                 <div class="Polaris-Labelled__LabelWrapper">
+                  <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Personal Address </label></div>
+                  </div>
+                 <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="customer_address" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                  <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+              </div>
+            </div>       
+          </div>
+        </div>
+         <div class="Polaris-FormLayout__Items">
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+              <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">City </label></div>
+                </div>
+               <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="customer_city" placeholder="City" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+            </div>
+           <div class="Polaris-FormLayout__Item">
+              <div class="">
+                <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Country </label></div>
+                </div>
+               <select onchange="onChangeCountryDDFromPersonalAddress()" id="customer_country" style="padding: 0.8rem;">
+                   <option value="" selected>---NONE---</option>
+                {{ country_option_tags }}
+              </select>
+              </div>
+            </div>
+
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+              <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">State </label></div>
+                </div>
+                <select id="customer_state">
+                   <option value="" selected>---NONE---</option>
+              </select>
+              </div>
+            </div>
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+                <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Zip Code</label></div>
+                </div>
+               <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="customer_pincode" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+            </div>
+         </div>
+      </div>
+
+    <div class="Polaris-Card__Section" style="padding-left: 0;"> 
+         <div role="group" class="Polaris-FormLayout--condensed">
+          <div class="Polaris-FormLayout__Items">
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+                <div class="">
+                 <div class="Polaris-Labelled__LabelWrapper">
+                 <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Company Name</label></div>
+                  </div>
+                 <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="business_name"  class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                  <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+              </div>
+            </div>       
+          </div>
+        </div>
+         <div role="group" class="Polaris-FormLayout--condensed">
+          <div class="Polaris-FormLayout__Items">
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+                <div class="">
+                 <div class="Polaris-Labelled__LabelWrapper">
+                  <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Company Address</label></div>
+                  </div>
+                 <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="cust_company_address"  class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                  <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+              </div>
+            </div>       
+          </div>
+        </div>
+         <div class="Polaris-FormLayout__Items">
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+              <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">City </label></div>
+                </div>
+               <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="cust_company_city" class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+            </div>
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+                <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Country </label></div>
+                </div>
+               <select onchange="onChangeCountryDDFromCompanyAddress()" id="cust_company_country" style="padding: 0.8rem;">
+                <option value="" selected>---NONE---</option>
+                {{ country_option_tags }}
+              </select>
+              </div>
+            </div>
+
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+              <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">State </label></div>
+                </div>                
+                <select id="cust_company_state">
+                   <option value="" selected>---NONE---</option>
+              </select>
+              </div>
+            </div>
+            <div class="Polaris-FormLayout__Item">
+              <div class="">
+                <div class="Polaris-Labelled__LabelWrapper">
+                <div class="Polaris-Label"><label id="TextField5Label" for="TextField5" class="Polaris-Label__Text">Zip Code</label></div>
+                </div>
+               <div class="Polaris-TextField Polaris-TextField--hasValue"><input id="cust_company_pincode"  class="Polaris-TextField__Input" aria-label="Store name" aria-labelledby="TextField5Label" aria-invalid="false" value="">
+                <div class="Polaris-TextField__Backdrop"></div>
+                 </div>
+              </div>
+            </div>
+         </div>
+        <br/>
+        
+         <div class="Polaris-FormLayout__Item">
+              <h4 style="color: darkseagreen; display:none" id="Leadsuccessmsg">Customer created & tagged to a sales rep successfully.</h4>
+               <span id="LeadErrror" style="color: #f80000; display:none">This customer is already tagged to a rep.</span> 
+               <span id="AddCustomerErrror" style="color: #f80000;"></span> 
+            </div>
+        <div class="Polaris-FormLayout__Items">
+             <div class="Polaris-FormLayout__Item">
+                     <div class="Polaris-ButtonGroup__Item">
+                           <button type="button" id="leadsave" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="CreateLead()">
+                             <span class="Polaris-Button__Content"><span> Save </span></span></button>
+                     </div>
+             </div>
+          </div>
+    </div>
+
+    </div>
+  </div>
+
+<!--Tagged Clients To Rep -->    
+<div id="SR_Clients" style="display:none;">
+  <div class="Polaris-Card Card-Bottom-Margin">
+    <div class="Polaris-Card__Header">
+      <h2 class="Polaris-Heading"> 
+        <div class="Polaris-Page-Header Header-Padding">
+                <div class="Polaris-Page-Header__Title">
+                  <div>
+                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Your Customers</h1>
+                  </div>
+                </div>
+         </div>
+      </h2>
+    </div>
+    <div class="Polaris-Card__Section"> 
+    <!--View Client Orders-->
+           <div class="page_content" id="ViewRepClientOrders" style="display:none;">      
+               <br/>
+               <div>
+                   <div class="Polaris-ButtonGroup__Item">
+                     <button type="button" class="Polaris-Button Polaris-Button--primary" style="font-size:18px;padding-left: 35px;padding-right: 35px;" onclick="BacktoYourClientPage()">
+                       <span class="Polaris-Button__Content"><span>[MYCUSTOMERS_BACKBTN]</span></span></button></div>
+               </div>
+
+                     <br/>
+                     <span class="Polaris-TextStyle--variationNegative" id="norepclientorder" style="display:none;">[MYCUSTOMERS_NOREPCLIENTORDER]</span>
+
+                 <div class="Polaris-Page__Content">
+                    <div class="Polaris-Card">
+                      <div class="">
+                        <div class="Polaris-DataTable__Navigation">
+                          <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                    <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                  </svg></span></span></span></button>
+                          <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                    <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                  </svg></span></span></span></button>
+                        </div>
+                        <div class="Polaris-DataTable">
+                          <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                            <table class="Polaris-DataTable__Table" id="ViewRepClientOrdersDetails">
+
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+               <br/>
+           </div>
+
+       <!-- All Clients -->
+           <div class="page_content" id="Clientdetails">      
+              <br>      
+              <br>
+             <div>
+              <span class="Polaris-TextStyle--variationNegative" id="norepclients" style="display:none;">No Clients</span>               
+              <div class="Polaris-Page__Content" id="TaggedClient" style="display:none;">
+               
+                      <div class="Polaris-Card">
+                        <div class="">
+                          <div class="Polaris-DataTable__Navigation">
+                            <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                      <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                    </svg></span></span></span></button>
+                            <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                      <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                    </svg></span></span></span></button>
+                          </div>
+                          <div class="Polaris-DataTable">
+                            <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                              <table class="Polaris-DataTable__Table" id="ViewTaggedClient">
+
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+
+             </div>
+      </div>
+    </div>
+</div>
+</div>
+  
+  <!--Previous order details-->      
+<div id="SR_PreviousOrder" style="display:none;">
+  <div class="Polaris-Card Card-Bottom-Margin">    
+    
+
+     <!--Previous order details Page Content -->
+     <div class="page_content" id="previousOrder">
+         <div class="Polaris-Card__Header">
+            <h2 class="Polaris-Heading"> 
+              <div class="Polaris-Page-Header Header-Padding">
+                      <div class="Polaris-Page-Header__Title">
+                        <div>
+                          <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Your Sales - Last 2 months order details</h1>
+                        </div>
+                      </div>
+               </div>
+            </h2>
+         </div>
+         <br>
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'YourSales')" style="display:block;">Your sales</button>
+            <button class="tablinks" onclick="openTab(event, 'YourPreviousOrders')">Draft orders</button>
+        </div>
+        <div id="YourSales" class="tabcontent" style="display:block;">
+         <div class="Polaris-Card__Section">
+            <br>
+              <span class="Polaris-TextStyle--variationNegative" id="NoPreviousOrderDetails" style="display:none;">[YOURSALES_NOPREVIOUSORDERDETAILS]</span>
+                    <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="ViewPreviousOrder">
+
+                                </table>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="Polaris-Card__Section">
+                   <div class="popup" data-popup="popup-1"id="productPopup2" style="display:none;">
+                                <!--Spinner-->
+                                <center>
+                                  <div id="PopuploadGif" style="display:none;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);"><svg viewBox="0 0 44 44" class="Polaris-Spinner Polaris-Spinner--colorTeal Polaris-Spinner--sizeLarge" role="status">
+                                    <path d="M15.542 1.487A21.507 21.507 0 0 0 .5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 0 0-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 1 0-.9-2.863z"></path>
+                                  </svg></div>
+                                </center>
+             
+                              <div class="popup-inner">
+                                          <div class="Polaris-DataTable">
+                                      <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                        <table class="Polaris-DataTable__Table" id="ViewClientProductModel2">
+  
+                                        </table>
+                                      </div>
+                                    </div>
+                                <br/>
+                                <p><b>SubTotal: <span id="OrdersSubtotal2"></span></b></p>
+                                <p><b>Tax: <span id="OrdersTax2"></span></b></p>
+                                <p><b>Shipping Cost: <span id="OrdersShipping2"></span></b></p>
+                                <p><b>Total: <span id="OrderTotal2"></span></b></p>
+                                <a class="popup-close" id="popupClose2" data-popup-close="popup-1" href="#"onclick="CloseYourModelData()">x</a>
+                            </div>  
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div id="YourPreviousOrders" class="tabcontent">
+            <div class="Polaris-Page__Content" id="yourSalesCard">
+              <div class="Polaris-Card" style="margin:2rem !important;">
+                <div class="">
+              	<center>
+                  <div id="yourSalesSpinner" style="margin:5rem;--top-bar-background:rgb(28, 34, 96); --top-bar-color:#f9fafb; --top-bar-background-darker:rgb(0, 8, 75); --top-bar-background-lighter:rgb(67, 70, 127);"><svg viewBox="0 0 44 44" class="Polaris-Spinner Polaris-Spinner--colorTeal Polaris-Spinner--sizeLarge" role="status">
+                    <path d="M15.542 1.487A21.507 21.507 0 0 0 .5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 0 0-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 1 0-.9-2.863z"></path>
+                  </svg></div>
+                </center>
+                </div>
+               </div>
+              </div>
+            <div class="page_content" id="ViewOrders" style="display:none;"> 
+                     <br/>
+                      <div><p id="noclientorder" style="display:none;">No Client Invoice Orders</p></div>
+
+           <div class="Polaris-Page__Content">
+              <div class="Polaris-Card" style="margin:2rem !important;">
+                <div class="">
+                  <div class="Polaris-DataTable__Navigation">
+                    <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                              <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                            </svg></span></span></span></button>
+                    <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                              <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                            </svg></span></span></span></button>
+                  </div>
+                  <div class="Polaris-DataTable">
+                    <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                      <table class="Polaris-DataTable__Table" id="ViewClientOrders">
+
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+               <br/>
+       </div>
+       </div>
+    </div>
+  </div>
+</div> 
+       
+ <!--My Orders details-->      
+<div id="SR_MyOrder" style="display:none;">
+  <div class="Polaris-Card Card-Bottom-Margin">    
+    
+
+     <!--My order details Page Content -->
+     <div class="page_content" id="MyOrder">
+         <div class="Polaris-Card__Header">
+            <h2 class="Polaris-Heading"> 
+              <div class="Polaris-Page-Header Header-Padding">
+                      <div class="Polaris-Page-Header__Title">
+                        <div>
+                          <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Order Details</h1>
+                        </div>
+                      </div>
+               </div>
+            </h2>
+         </div>
+         <div class="Polaris-Card__Section">
+            <br>
+              <span class="Polaris-TextStyle--variationNegative" id="NoMyOrderDetails" style="display:none;">No Orders</span>
+                    <div class="Polaris-Page__Content">
+                        <div class="Polaris-Card">
+                          <div class="">
+                            <div class="Polaris-DataTable__Navigation">
+                              <button type="button" class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" disabled="" aria-label="Scroll table left one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                              <button type="button" class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="Scroll table right one column"><span class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span class="Polaris-Icon"><svg class="Polaris-Icon__Svg" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                                        <path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16" fill-rule="evenodd"></path>
+                                      </svg></span></span></span></button>
+                            </div>
+                            <div class="Polaris-DataTable">
+                              <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                <table class="Polaris-DataTable__Table" id="ViewMyOrder">
+                                                               
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+          </div>
+      </div>
+      <div class="popup" data-popup="popup-1"id="productPopup" style="display:none;">
+                            <div class="popup-inner">
+                                        <div class="Polaris-DataTable">
+                                    <div class="Polaris-DataTable__ScrollContainer" style="margin-left: -0.5rem;">
+                                      <table class="Polaris-DataTable__Table" id="ViewProductModel">
+
+                                      </table>
+                                    </div>
+                                  </div>
+                              <br/>
+                              <p><b>SubTotal: <span id="OrdersSubtotal"></span></b></p>
+                              <p><b>Tax: <span id="OrdersTax"></span></b></p>
+                              <p><b>Shipping Cost: <span id="OrdersShipping"></span></b></p>
+                              <p><b>Total: <span id="OrderTotal"></span></b></p>
+              <a class="popup-close" id="popupClose" data-popup-close="popup-1" href="#"onclick="CloseModelData()">x</a>
+          </div>
+      </div>
+       
+     </div>
+  </div>
+</div> 
+</div>
+      <!--End-->
+          </div>             
+       </main>
+        <!--End Main Frame -->
+    </div>                                                   
+</div>
+<!--End SalesRep App-->

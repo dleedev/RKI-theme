@@ -1,0 +1,38 @@
+
+<div id="bundle-custom-section">
+  {%- if section.settings.title != blank -%}
+  <div class="bundle-custom-section-title"><h2>{{section.settings.title}}</h2></div>
+  {%- endif -%}
+  <div class="bundle-custom-section-code">{{section.settings.custom_html}}</div>
+</div>
+<style>
+  #bundle-custom-section{position:relative;}
+  .bundle-custom-section-title{text-align:center;}
+</style>
+
+{% schema %}
+  {
+    "name": "Allfetch Bundle",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+		"type":"textarea",
+		"id": "custom_html",
+		"label": "HTML"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Allfetch Bundle",
+        "category": "Allfetch Bundle",
+        "settings": {
+
+        }
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,2 @@
+{% if content_for_header contains 'appsolve.io' %}{{ shop.metafields.vitals["setupScript"] }}
+<script data-src="https://appsolve.io{{ content_for_header | split: 'appsolve.io' | last | split: '"' | first | replace: '\u0026' : '&' | replace: '\/' : '/' }}" type="lazyload2"></script>{% endif %}

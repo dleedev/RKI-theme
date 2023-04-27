@@ -1,0 +1,246 @@
+
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+{% assign zooomy__related__fields = shop.metafields.zooomy__rproduct %}
+{{ 'zooomyrpstyle.css' | asset_url | stylesheet_tag }}
+{% if zooomy__related__fields['zooomy_enable_rproduct'] == "enable" %}
+{% assign noofcol = zooomy__related__fields['zooomy_noofcol'] %}
+{% assign zoo = zooomy__related__fields['zooomy_max_pro'] %}
+{% assign zooplus = zoo | plus: 1 %}
+{% assign colwidth = 100 | divided_by: noofcol %}
+{% if noofcol == "" %}
+{% assign noofcol = "4" %}
+{% endif %}
+<div class="zooomyrelated" style="display:none;" id="zooomyrelatedproducts">
+<h4>{{ zooomy__related__fields['zooomy_r_heading']}}</h4>
+{% if zooomy__related__fields['zooomy_relate_by'] == "collection" %}
+<div id="zooomy-related-productss" class="zooomyrp-carousel">
+{% assign coll = product.collections.first.handle %}
+{% paginate collections.coll.products by 100 %}
+{% for relatedproduct in collections[coll].products limit:zoo %}
+{% unless product.handle == relatedproduct.handle %}
+{% if relatedproduct.available %}
+<div id="{{relatedproduct.id}}" class="zooomy-product-grid zooomyrpitem">
+<div class="zooomy-product-img"><a href="{{relatedproduct.url}}" data-shop="{{shop.permanent_domain}}" class="zooomyrpcartimg" data-id="{{relatedproduct.id}}" data-name="{{relatedproduct.title}}" data-handle="{{relatedproduct.handle}}"> <img src="{{ relatedproduct | img_url: " grande" }}" /> </a></div>
+<div class="zooomy-product-title"> {{relatedproduct.title}}</div>
+<div class="zooomy-product-price">
+{% if zooomy__related__fields['zooomy_show_price'] == "true" %}
+<div class="zooomy-product-sale-price"> {{relatedproduct.price | money}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_comp_price'] == "true" %}
+{% unless relatedproduct.compare_at_price_max == "0" %}
+<div class="zooomy-product-compare-price"> {{relatedproduct.compare_at_price_max | money}}</div>
+{% endunless %}
+{% endif %}
+</div>
+{% if zooomy__related__fields['zooomy_show_pt'] == "true" %}
+<div class="zooomy-product-type"> {{relatedproduct.product_type}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_show_ven'] == "true" %}
+<div class="zooomy-product-vendor"> {{relatedproduct.vendor}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_show_btn'] == "true" %}
+<div class="zooomy-product-button"> <a href="{{relatedproduct.url}}" data-shop="{{shop.permanent_domain}}" class="zooomyrpcart" data-id="{{relatedproduct.id}}" data-name="{{relatedproduct.title}}" data-handle="{{relatedproduct.handle}}">{{zooomy__related__fields['zooomy_see_btn_text']}}</a></div>
+{% endif %}
+</div>
+{% endif %}
+{% endunless %}
+{% endfor %}
+{% endpaginate %}
+</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_relate_by'] == "product_type" %}
+<div id="zooomy-related-productss" class="zooomyrp-carousel">
+{% assign protype = product.type %}
+{% paginate collections.all.products by 100 %}
+{% for relatedproduct in collections.all.products %}
+{% if relatedproduct.type == protype %}
+{% unless relatedproduct.id == product.id%}
+<div id="{{relatedproduct.id}}" class="zooomy-product-grid zooomyrpitem">
+<div class="zooomy-product-img"><a href="{{relatedproduct.url}}" data-shop="{{shop.permanent_domain}}" class="zooomyrpcartimg" data-id="{{relatedproduct.id}}" data-name="{{relatedproduct.title}}" data-handle="{{relatedproduct.handle}}"> <img src="{{ relatedproduct | img_url: " grande" }}" /> </a></div>
+<div class="zooomy-product-title"> {{relatedproduct.title}}</div>
+<div class="zooomy-product-price">
+{% if zooomy__related__fields['zooomy_show_price'] == "true" %}
+<div class="zooomy-product-sale-price"> {{relatedproduct.price | money}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_comp_price'] == "true" %}
+{% unless relatedproduct.compare_at_price_max == "0" %}
+<div class="zooomy-product-compare-price"> {{relatedproduct.compare_at_price_max | money}}</div>
+{% endunless %}
+{% endif %}
+</div>
+{% if zooomy__related__fields['zooomy_show_pt'] == "true" %}
+<div class="zooomy-product-type"> {{relatedproduct.product_type}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_show_ven'] == "true" %}
+<div class="zooomy-product-vendor"> {{relatedproduct.vendor}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_show_btn'] == "true" %}
+<div class="zooomy-product-button"> <a href="{{relatedproduct.url}}" data-shop="{{shop.permanent_domain}}" class="zooomyrpcart" data-id="{{relatedproduct.id}}" data-name="{{relatedproduct.title}}" data-handle="{{relatedproduct.handle}}">{{zooomy__related__fields['zooomy_see_btn_text']}}</a></div>
+{% endif %}
+</div>
+{% endunless %}
+{% endif %}
+{% endfor %}
+{% endpaginate %}
+</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_relate_by'] == "product_vendor" %}
+<div id="zooomy-related-productss" class="zooomyrp-carousel">
+{% assign provendor = product.vendor %}
+{% paginate collections.all.products by 100 %}
+{% for relatedproduct in collections.all.products %}
+{% if relatedproduct.vendor == provendor %}
+<div id="{{relatedproduct.id}}" class="zooomy-product-grid zooomyrpitem">
+<div class="zooomy-product-img"><a href="{{relatedproduct.url}}" data-shop="{{shop.permanent_domain}}" class="zooomyrpcartimg" data-id="{{relatedproduct.id}}" data-name="{{relatedproduct.title}}" data-handle="{{relatedproduct.handle}}"> <img src="{{ relatedproduct | img_url: " grande" }}" /> </a></div>
+<div class="zooomy-product-title"> {{relatedproduct.title}}</div>
+<div class="zooomy-product-price">
+{% if zooomy__related__fields['zooomy_show_price'] == "true" %}
+<div class="zooomy-product-sale-price"> {{relatedproduct.price | money}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_comp_price'] == "true" %}
+{% unless relatedproduct.compare_at_price_max == "0" %}
+<div class="zooomy-product-compare-price"> {{relatedproduct.compare_at_price_max | money}}</div>
+{% endunless %}
+{% endif %}
+</div>
+{% if zooomy__related__fields['zooomy_show_pt'] == "true" %}
+<div class="zooomy-product-type"> {{relatedproduct.product_type}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_show_ven'] == "true" %}
+<div class="zooomy-product-vendor"> {{relatedproduct.vendor}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_show_btn'] == "true" %}
+<div class="zooomy-product-button"> <a href="{{relatedproduct.url}}" data-shop="{{shop.permanent_domain}}" class="zooomyrpcart" data-id="{{relatedproduct.id}}" data-name="{{relatedproduct.title}}" data-handle="{{relatedproduct.handle}}">{{zooomy__related__fields['zooomy_see_btn_text']}}</a></div>
+{% endif %}
+</div>
+{% endif %}
+{% endfor %}
+{% endpaginate %}
+</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_relate_by'] == "product_tag" %}
+<div id="zooomy-related-productss" class="zooomyrp-carousel">
+{% paginate collections.all.products by 800 %}
+{% if zooomy__related__fields['zooomy_tags'] == "empty" %}
+{% assign tagg = product.tags%}
+{% else %}
+{% assign tagg = zooomy__related__fields['zooomy_tags'] | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}
+{% endif %}
+{% assign newtags = product.tags%}
+{% for ztag in tagg %}
+{% if newtags contains ztag %}
+{% for relatedproduct in collections.all.products %}
+{% for rztag in relatedproduct.tags %}
+{% if rztag == ztag %}
+{% unless product.handle == relatedproduct.handle %}
+<div id="{{relatedproduct.id}}" class="zooomy-product-grid zooomyrpitem">
+<div class="zooomy-product-img"><a href="{{relatedproduct.url}}" data-shop="{{shop.permanent_domain}}" class="zooomyrpcartimg" data-id="{{relatedproduct.id}}" data-name="{{relatedproduct.title}}" data-handle="{{relatedproduct.handle}}"> <img src="{{ relatedproduct | img_url: " grande" }}" /> </a></div>
+<div class="zooomy-product-title"> {{relatedproduct.title}}</div>
+<div class="zooomy-product-price">
+{% if zooomy__related__fields['zooomy_show_price'] == "true" %}
+<div class="zooomy-product-sale-price"> {{relatedproduct.price | money}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_comp_price'] == "true" %}
+{% unless relatedproduct.compare_at_price_max == "0" %}
+<div class="zooomy-product-compare-price"> {{relatedproduct.compare_at_price_max | money}}</div>
+{% endunless %}
+{% endif %}
+</div>
+{% if zooomy__related__fields['zooomy_show_pt'] == "true" %}
+<div class="zooomy-product-type"> {{relatedproduct.product_type}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_show_ven'] == "true" %}
+<div class="zooomy-product-vendor"> {{relatedproduct.vendor}}</div>
+{% endif %}
+{% if zooomy__related__fields['zooomy_show_btn'] == "true" %}
+<div class="zooomy-product-button"> <a href="{{relatedproduct.url}}" data-shop="{{shop.permanent_domain}}" class="zooomyrpcart" data-id="{{relatedproduct.id}}" data-name="{{relatedproduct.title}}" data-handle="{{relatedproduct.handle}}">{{zooomy__related__fields['zooomy_see_btn_text']}}</a></div>
+{% endif %}
+</div>
+{% endunless %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endpaginate %}
+</div>
+{% endif %}
+</div>
+{% endif %}
+<script>
+$('#zooomy-related-productss [id]').each(function () {
+$('[id="' + this.id + '"]:gt(0)').remove();
+ });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+{{ 'zooomyrpslider.js' | asset_url | script_tag }}
+<script>
+  jQuery(document).ready(function($) {
+"use strict";
+$('#zooomy-related-productss').zooomyrpCarousel( {
+    loop: true,
+    center: false,
+    items: 3,
+    margin: 30,
+    autoplay: true,
+    dots:true,
+    nav:true,
+    autoplayTimeout: 8500,
+    smartSpeed: 450,
+    navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+    responsive: {
+      0: {
+        items: 2
+      },
+      768: {
+        items: 3
+      },
+      1170: {
+        items: {{noofcol}}
+      }
+    }
+  });
+});
+</script>
+<style>
+
+
+  .zooomyrelatedcontainer{display:flex;flex-wrap: wrap;float:left;width:100%; }
+  .zooomyrelated h4{font-size:{{zooomy__related__fields['zooomy_r_font_size']}}; color:{{zooomy__related__fields['zooomy_r_font_color']}};}
+  .zooomy-product-grid{ box-sizing:border-box;}
+  .zooomy-product-sale-price{display: inline;color:{{zooomy__related__fields['zooomy_price_color']}};width: auto; margin-right: 10px;}
+  .zooomy-product-compare-price{    display: inline;color:{{zooomy__related__fields['zooomy_cprice_color']}};width: auto;text-decoration: line-through;}
+  .zooomy-product-price{float:left; width:100%;text-align:center;}
+   .zooomy-product-type{color:{{zooomy__related__fields['zooomy_ptype_color']}};float:left; width:100%;}
+  .zooomy-product-vendor{color:{{zooomy__related__fields['zooomy_vendor_color']}};float:left; width:100%;}
+  .zooomy-product-button{float:left; width:100%;padding: 15px 0;box-sizing:border-box;}
+  .zooomy-product-button a
+  {
+    padding:10px 20px;
+    box-sizing:border-box;
+    margin:0 auto;
+    width: {{zooomy__related__fields['zooomy_see_width']}};
+    border-radius: {{zooomy__related__fields['zooomy_see__radius']}};
+    color: {{zooomy__related__fields['zooomy_see_font_color']}};
+    background: {{zooomy__related__fields['zooomy_see_bg_color']}};
+    font-size: {{zooomy__related__fields['zooomy_see_font_size']}};
+    border: {{zooomy__related__fields['zooomy_see_border_width']}} solid {{zooomy__related__fields['zooomy_see_border_color']}};
+  }
+#zooomy-related-productss .zooomyrp-item img {
+    max-height: 200px;
+    width: auto;
+    float: none;
+    display: initial;
+    max-width: 100%;
+}
+  .zooomyrp-carousel .zooomyrp-item{text-align:center;}
+ #shopify-section-general-footer, footer {
+    clear: both;
+}
+</style>
+<script>
+ if ($('.zooomy-product-grid').length == 0) 
+ {
+$("#zooomyrelatedproducts h4").hide();
+ }
+</script>

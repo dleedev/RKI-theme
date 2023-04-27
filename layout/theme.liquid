@@ -1,0 +1,259 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ settings.text_direction }}">
+  
+  <head>
+    <meta name="facebook-domain-verification" content="8a8kkxr3zilu3pwmatl6glp2tq5m99" />
+     
+    <!-- Global site tag (gtag.js) - Google Ads: 430543312 -->
+    <script type="lazyload2" data-src="https://www.googletagmanager.com/gtag/js?id=AW-430543312"></script>
+    <script type="lazyload2">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-430543312');
+      
+    </script>
+    
+    <meta name="google-site-verification" content="tIeqj_tZRFYkbeI3t-yqCuhpAZfiLPnd1cXOjZpVfXA" />
+    <meta name="facebook-domain-verification" content="5upfbeg1a6l1e3xkh5ug7ka1t32dg4" />
+    {%- render 'layouthub_header' -%}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_button }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com">
+    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+    <link rel="dns-prefetch" href="https://ajax.googleapis.com">
+    <link rel="dns-prefetch" href="https://maps.googleapis.com">
+    <link rel="dns-prefetch" href="https://maps.gstatic.com">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
+    {%- endif -%}
+
+    {%- render 'seo-title' -%}
+
+    {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {%- render 'social-meta-tags' -%}
+
+    {%- render 'font-face' -%}
+    {% include 'font-css' %}
+    <link rel="stylesheet" data-href="{{ 'bootstrap-iso.css' | asset_url }}">
+    {% include 'themes-css' %}
+    <link rel="stylesheet" data-href="{{ 'theme.css' | asset_url }}">
+    
+    {%- render 'css-variables' -%}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+
+      window.theme = window.theme || {};
+      theme.routes = {
+        home: "{{ routes.root_url }}",
+        cart: "{{ routes.cart_url }}",
+        cartAdd: "{{ routes.cart_add_url | append: '.js'}}",
+        cartChange: "{{ routes.cart_change_url }}"
+      };
+      theme.strings = {
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        stockLabel: {{ 'products.product.stock_label' | t: count: '[count]' | json }},
+        willNotShipUntil: {{ 'products.product.will_not_ship_until' | t: date: '[date]' | json }},
+        willBeInStockAfter: {{ 'products.product.will_be_in_stock_after' | t: date: '[date]' | json }},
+        waitingForStock: {{ 'products.product.waiting_for_stock' | t | json }},
+        savePrice: {{ 'products.general.save_html' | t: saved_amount: '[saved_amount]' | json }},
+        cartEmpty: {{ 'cart.general.empty' | t | json }},
+        cartTermsConfirmation: {{ 'cart.general.terms_confirm' | t | json }}
+      };
+      theme.settings = {
+        dynamicVariantsEnable: true,
+        dynamicVariantType: {{ settings.variant_type | json }},
+        cartType: {{ settings.cart_type | json }},
+        moneyFormat: {{ shop.money_format | json }},
+        saveType: {{ settings.product_save_type | json }},
+        recentlyViewedEnabled: false,
+        predictiveSearch: {{ settings.predictive_search_enabled }},
+        predictiveSearchType: {{ settings.search_type | json }},
+        inventoryThreshold: {{ settings.inventory_threshold }},
+        quickView: {{ settings.quick_shop_enable }},
+        themeName: 'Impulse',
+        themeVersion: "3.6.2"
+      };
+    </script>
+
+    {%- if request.host == "shoplezat.myshopify.com" or template contains 'cart' or template contains 'checkout' -%}
+      {{ content_for_header }}
+    {%- else -%}
+      {% capture content_for_header2 %}
+        {{ content_for_header }}
+      {% endcapture %}
+      {{ content_for_header2 | replace: ' defer="defer" ', ' type="lazyload2" ' | replace: " src=", " data-src=" | replace: "window.addEventListener('load', asyncLoad, false);", "window.addEventListener('wnw_load', asyncLoad, false);" | replace: "DOMContentLoaded", "DOMContentLoaded2" }}
+    {%- endif -%}
+
+  	{% include 'vitals-loader' %}
+
+    {%- render 'bold-pr' -%}
+    <script src="{{ 'vendor-scripts-v7.js' | asset_url | split: '?' | first }}" defer="defer"></script>
+
+    {%- if shop.enabled_currencies.size > 1 -%}
+      <link rel="stylesheet" href="{{ 'currency-flags.css' | asset_url | split: '?' | first }}">
+    {%- endif -%}
+
+    <script data-src="{{ 'theme.js' | asset_url }}" type="lazyload2"></script>
+
+    {%- if request.page_type contains 'customers/' -%}
+      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+    {%- endif -%}
+    <script type="lazyload2" data-src="https://www.dwin1.com/19038.js"></script>
+
+    {% render 'shogun-head' %}
+    <!-- Hotjar Tracking Code for www.shoplezat.com -->
+    <script type="lazyload2">
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:2276797,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+
+    <!-- Install this snippet AFTER the Hotjar tracking code. -->
+    <script type="lazyload2">
+    var userId = your_user_id || null; // Replace your_user_id with your own if available.
+    window.hj('identify', userId, {
+        // Add your own custom attributes here. Some EXAMPLES:
+        // 'Signed up': '2019—06-20Z', // Signup date in ISO-8601 format.
+        // 'Last purchase category': 'Electronics', // Send strings with quotes around them.
+        // 'Total purchases': 15, // Send numbers without quotes.
+        // 'Last purchase date': '2019-06-20Z', // Send dates in ISO-8601 format.
+        // 'Last refund date': null, // Send null when no value exists for a user.
+    });
+    </script>
+
+    <script type="lazyload2">var scaaffCheck = false;</script>
+    <script type="lazyload2" data-src="{{ 'sca.affiliate.data.js' | asset_url }}"></script>
+    <script type="lazyload2" data-src="{{ 'sca_affiliate.js' | asset_url }}"></script>
+    
+  {% if content_for_header contains 'rio.pwztag.com' %}{% render 'productwiz-rio', product: product, shop: shop, installGuard: true %}{% endif %}
+<script src='{{ 'sca.affiliate.data.js' | asset_url }}' async></script>
+</head>
+
+  <body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}{% if request.path == '/challenge' %} template-challange{% endif %}" data-center-text="{{settings.type_body_align_text}}" data-button_style="{{settings.button_style}}" data-type_header_capitalize="{{settings.type_header_capitalize}}" data-type_headers_align_text="{{settings.type_headers_align_text}}" data-type_product_capitalize="{{settings.type_product_capitalize}}" data-swatch_style="{{settings.swatch_style}}" {% if settings.disable_animations %}data-disable-animations="true"{% endif %}>
+  
+    <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+    <div id="PageContainer" class="page-container">
+      <div class="transition-body">
+
+      {%- section 'header' -%}
+
+        <main class="main-content" id="MainContent">
+          <!--LayoutHub-Workspace-Start-->{{ content_for_layout }}<!--LayoutHub-Workspace-End-->
+        </main>
+
+        {%- section 'footer-promotions' -%}
+        {%- section 'footer' -%}
+
+      </div>
+    </div>
+
+    {%- section 'newsletter-popup' -%}
+
+    {%- if settings.cart_type == 'drawer' -%}
+      {%- render 'ajax-cart-template' -%}
+    {%- endif -%}
+
+    <div class="hide">
+      <button data-id="prevArrowTemplate" class="slick-prev" aria-label="{{ 'general.pagination.previous' | t }}" type="button">
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-left" viewBox="0 0 284.49 498.98"><path d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0z"/></svg>
+        <span class="icon__fallback-text">{{ 'general.pagination.previous' | t }}</span>
+      </button>
+      <button data-id="nextArrowTemplate" class="slick-next" aria-label="{{ 'general.pagination.next' | t }}" type="button">
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-right" viewBox="0 0 284.49 498.98"><path d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98z"/></svg>
+        <span class="icon__fallback-text">{{ 'general.pagination.next' | t }}</span>
+      </button>
+    </div>
+
+    {%- if settings.predictive_search_enabled -%}
+      {%- render 'predictive-template' -%}
+    {%- endif -%}
+
+    {%- render 'video-modal' -%}
+    {%- render 'photoswipe-template' -%}
+    {%- if template contains 'product' -%}
+      {%- render 'recently-viewed-product-template' -%}
+    {%- endif -%}
+    <script type="lazyload2" data-src='https://spcdn.incartupsell.com/iffgf-t-JJqT67gz1VoR_8DWus.js'></script>
+
+    {% include 'mps-buy-me' %}
+    {%- render 'layouthub_footer' -%} 
+    <!-- Stamped - Begin Script-->
+     
+    <script type="lazyload2" id="stamped-script-widget" data-api-key="pubkey-824py4u811StQ4q63Opq9EJ6cPz8A1" data-src="https://cdn1.stamped.io/files/widget.min.js"></script>
+     
+      <!-- Stamped - End Script --><br>
+      <!-- CRITEO START -->
+    {% include 'criteo-tracking' %}
+    <!-- CRITEO END -->
+    <script type="lazyload2" data-src='//satcb.azureedge.net/Scripts/satcb.min.js?shop=shoplezat.myshopify.com'></script>
+    {% comment %}<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install" type="lazyload2">!function(_){_.GORGIAS_CHAT_APP_ID="7435",_.GORGIAS_CHAT_BASE_URL="us-east1-898b.production.gorgias.chat",_.GORGIAS_API_BASE_URL="config.gorgias.chat";var e=new XMLHttpRequest;e.open("GET","https://config.gorgias.chat/applications/7435",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - https://config.gorgias.chat/applications/7435");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById("gorgias-chat-container")){var o=document.createElement("div");o.id="gorgias-chat-container",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="https://client-builds.production.gorgias.chat/{bundleVersion}/static/js/main.js".replace("{bundleVersion}",n.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - https://config.gorgias.chat/applications/7435")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script>
+    <!--Gorgias Chat Widget End-->{% endcomment %}
+    {% render "afterpay" %}
+
+    {{ 'wnw-optimization.js' | asset_url | script_tag }}
+  {% render 'th-bundle-product' %}
+  <script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+<script>
+    var klaviyo = klaviyo || [];
+    klaviyo.init({
+      account: "RikzWS",
+      platform: "shopify"
+    });
+    klaviyo.enable("backinstock",{ 
+    trigger: {
+      product_page_text: "Notify Me When Available",
+      product_page_class: "btn",
+      product_page_text_align: "center",
+      product_page_margin: "0px",
+      replace_anchor: false
+    },
+    modal: {
+     headline: "{product_name}",
+     body_content: "Sign up to receive a notification when this item comes back in stock!",
+     email_field_label: "Email",
+     button_label: "Notify me when available",
+     subscription_success_label: "You're in! We'll let you know when it's back.",
+     footer_content: '',
+     additional_styles: "@import url('https://fonts.googleapis.com/css?family=Helvetica+Neue');",
+     drop_background_color: "#000",
+     background_color: "#fff",
+     text_color: "#222",
+     button_text_color: "#fff",
+     button_background_color: "#439fdb",
+     close_button_color: "#ccc",
+     error_background_color: "#fcd6d7",
+     error_text_color: "#C72E2F",
+     success_background_color: "#d3efcd",
+     success_text_color: "#1B9500"
+    }
+  });
+</script>
+  </body>
+</html>
+<!-- Begin Shopify-Afterpay JavaScript Snippet (v1.0.1) -->
+<script type="text/javascript">
+  // Liquid variables:
+  var afterpay_product = {{ product | json }};
+  var afterpay_product_variant = {{ product.selected_or_first_available_variant | json }};
+  var afterpay_cart_total_price = {{ cart.total_price | json }};
+</script>
+<!-- End Shopify-Afterpay JavaScript Snippet (v1.0.1) -->

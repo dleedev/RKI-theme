@@ -1,0 +1,22 @@
+{% comment %}
+Do NOT change this file.
+{% endcomment %}
+
+<script>
+  window.bm_product = [];
+  {% if product %}
+  try{
+    window.bm_product = {{ product | json }};
+    window.bm_product.options = {{ product.options_with_values | json }};
+  }
+  catch(err){
+  }
+  {% endif %}
+
+  window.bm_remember_my_cart = [];
+  {% if customer %}
+  	{% unless customer.metafields.global.bm_remember_my_cart == blank %}
+  		window.bm_remember_my_cart = {{ customer.metafields.global.bm_remember_my_cart }};
+    {% endunless %}
+  {% endif %}
+</script>

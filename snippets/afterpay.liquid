@@ -1,0 +1,53 @@
+<!-- BEGIN AFTERPAY-PRESENT -->
+<script type="lazyload2" data-src="https://static-us.afterpay.com/javascript/present-afterpay.js"></script>
+<script type="lazyload2">
+ let amount = 0, priceSelector = "", locale = 'en_US';
+ let afterpayLogoColor = "black"; // ['black', 'white', or 'color']
+ let showUpperLimit = false;
+ let currentObserver = { activated: false, isDecimalPrice: true };
+ // above conditionals - also, add to config
+ let hideAfterpay = false;
+  
+ {%case template.name%} 
+    {%when "product"%}
+      // In product conditional
+      let type = {{product.type | json}};
+      if (type === "Gift Card") hideAfterpay = true;
+      amount = {{product.selected_or_first_available_variant.price | json}};
+      priceSelector= ".product__price-savings"
+      if (!document.querySelector(priceSelector)) {
+        priceSelector = "[id^='ProductPrice-']"
+      }
+      currentObserver = null;
+      // currentObserver.observerTarget = ".product-single__meta";
+      // currentObserver.targetPriceSelector = "[id^='ProductPrice-']";
+    {%when "cart"%}     
+      // in cart conditional
+ 	  let cartItems = {{cart.items | json }};
+      hideAfterpay = cartItems.some(item => item.gift_card);
+  
+      amount = {{cart.total_price | json}};
+      priceSelector = ".cart__row--table"
+      currentObserver = null;
+    {%when "product" or "cart"%}
+       const apConfig = {
+          afterpayLogoColor, priceSelector, locale, amount, showUpperLimit,
+         minMaxThreshold:{min: 100, max: 200000}, giftCard: hideAfterpay,
+          mutationObserver: currentObserver
+        };
+       setTimeout(function(){
+         new presentAfterpay(apConfig).init();
+       });
+  {%endcase%}
+</script>
+<style>
+  // .c-afterpay-info-modal-annotation__p{ margin-top: 3px; }
+  .afterpay-link{font-size: 12px; }
+  .afterpay-paragraph{ font-size: 14px; margin-top: 6px;}
+  .disclaimer-link { font-size: 12px; }
+  .afterpay-logo {
+    width: 85px;
+    height: auto;
+  }
+</style>
+<!-- END AFTERPAY PRESENT -->
