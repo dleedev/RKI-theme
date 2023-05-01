@@ -1,3 +1,11 @@
+{% comment %} {%- liquid assign heading = 'rgba(var(--color-foreground), 0.75)' -%}
+{%- liquid assign checkbox_color = "#0D9B13" -%}
+{%- liquid assign checkbox_background_color = "#FFFFFF" -%}
+{%- liquid assign fontsize = 12-%}
+{%- liquid assign checkbox_size = 20 -%}
+{%- liquid assign checkbox_width = 40 -%}
+{%- liquid assign checkbox_border_radius = 14 -%} {% endcomment %}
+
 <div class="page-width page-content">
 
   {%- render 'breadcrumbs' -%}
@@ -67,6 +75,150 @@
                       <div class="cart__product-meta {% if item.selling_plan_allocation == empty %}hide {% endif %}">
                         {{ item.selling_plan_allocation.selling_plan.name }}
                       </div>
+                      
+                      {% comment %} {% for tag in item.product.tags %}
+                        {%- liquid assign tag_downcase = tag | downcase -%}
+                        {% if tag_downcase contains "rki:" %}
+                          {% assign has_rki_discount = true %}
+                          {% assign rki_discount = tag | split: ":" | last | times: 1.00000000 %}
+                        {% endif %}
+                      {% endfor %}
+                      
+                      {% if has_rki_discount %}
+                        {% assign rki_discount_multiplier = 100 | minus: rki_discount | divided_by: 100.00000000 %}
+                        {% capture rki_discount_json %}
+                          {
+                          "discount": {{ rki_discount | json }},
+                          "variants": [
+                          {% for variant in item.product.variants %}
+                            {% assign rki_discount_price = variant.price | times: rki_discount_multiplier %}
+                            {
+                            "id": {{ variant.id | json }},
+                            "original_price": {
+                                                                        "raw": {{ variant.price | json }},
+                            "formatted": {{ variant.price | money | json }}
+                            },
+                            "discount_price": {
+                                                                        "raw": {{ rki_discount_price | json }},
+                            "formatted": {{ rki_discount_price | money | json }}
+                            },
+                            "discount": {
+                                                                        "raw": {{ variant.price | minus: rki_discount_price | json }},
+                            "formatted": {{ variant.price | minus: rki_discount_price | money | json }}
+                            }
+                            }{%- unless forloop.last -%},
+                            {%- endunless -%}
+                          {% endfor %}
+                          ]
+                          }
+                        {% endcapture %}
+                        {%- for varient in item.product.variants -%}
+                          <div class="rki" 
+                            data-rki-widget='cart-line-item' 
+                            data-heading = {{ heading }} 
+                            data-checkbox_color = {{ checkbox_color }} 
+                            data-fontsize = {{ fontsize }} 
+                            data-checkbox_size = {{ checkbox_size }} 
+                            data-checkbox_border_radius = {{ checkbox_border_radius }}  
+                            data-rki-id='{{ item.product.id }}' 
+                            data-rki-variant-id='{{ varient.id }}' 
+                            data-rki-tags='{{ item.product.tags }}' 
+                            data-rki-discount-json='{{ rki_discount_json | strip }}'>
+                          </div>
+                        {%- endfor -%}
+                        <style>
+                          .rki__checkbox .rki__checkbox-ui {
+                              position: relative;
+                              font-size: 16px;
+                              text-align: center;
+                              color: {{ heading }} !important;
+                              overflow: hidden;
+                              top: 4px;
+                              height: {{ checkbox_size }}px !important;
+                              width: {{ checkbox_size }}px !important;
+                              flex-shrink: 0;
+                              border: 1px solid {{ checkbox_color }} !important;
+                              border-radius: {{ checkbox_border_radius }}px !important;
+                              margin-right: 7px
+                          }
+                          .rki__label{
+                             font-size: {{ fontsize }}px !important;
+                             color: {{ heading }} !important;
+                          }
+                          /* Toggle Button */
+                          .rki__checkbox-input {
+                            -webkit-appearance: none;
+                            -webkit-tap-highlight-color: transparent;
+                            position: relative !important;
+                            border: 0;
+                            outline: 0;
+                            cursor: pointer;
+                            height: {{ checkbox_size }}px !important;
+                            width: {{ checkbox_width }}px !important;
+                            margin-right: 10px !important;
+                            overflow: unset !important;
+                          }
+                          
+                          
+                          /* To create surface of toggle button */
+                          .rki__checkbox-input:after {
+                            content: '';
+                            height: {{ checkbox_size }}px !important;
+                            width: {{ checkbox_width }}px !important;
+                            display: inline-block;
+                            background: {{ checkbox_color }} !important;
+                                  border-radius: {{ checkbox_border_radius }}px !important;
+                            clear: both;
+                                  border: 4px solid rgb(var(--color-base-background-1));
+                          }
+                          
+                          
+                          /* Contents before checkbox to create toggle handle */
+                          .rki__checkbox-input:before {
+                            content: '';
+                            width: {{ checkbox_size }}px !important;
+                            height: {{ checkbox_size }}px !important;
+                            display: block;
+                            position: absolute;
+                            left: 0px;
+                            top: 0px;
+                            border-radius: 50%;
+                            background: {{ checkbox_background_color }};
+                            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+                          }
+                          
+                          .rki__checkbox-input:after {
+                            background: gray !important;
+                          }
+                          
+                          /* Shift the handle to left on check event */
+                          .rki__checkbox-input:checked:before {
+                            left: 20px !important;
+                            box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.6);
+                          }
+                          /* Background color when toggle button will be active */
+                          .rki__checkbox-input:checked:after {
+                            background: {{ checkbox_color }} !important;
+                          }
+                          
+                          .rki__checkbox-ui {
+                            display:none !important;
+                          }
+                          
+                          /* Transition for smoothness */
+                          .rki__checkbox-input,
+                          .rki__checkbox-input:before,
+                          .rki__checkbox-input:after,
+                          .rki__checkbox-input:checked:before,
+                          .rki__checkbox-input:checked:after {
+                            transition: ease .3s;
+                            -webkit-transition: ease .3s;
+                            -moz-transition: ease .3s;
+                            -o-transition: ease .3s;
+                          }
+                          </style>
+                          <!-- End ReKeepIt Opt-In Selector -->
+                      {% endif %} {% endcomment %}
 
                       {%- assign property_size = item.properties | size -%}
                       {% if property_size > 0 %}

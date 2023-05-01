@@ -1,14 +1,18 @@
-{%- liquid assign heading = 'rgba(var(--color-foreground), 0.75)' -%}
+{% comment %} {%- liquid assign heading = 'rgba(var(--color-foreground), 0.75)' -%}
 {%- liquid assign checkbox_color = "#0D9B13" -%}
 {%- liquid assign checkbox_background_color = "#FFFFFF" -%}
 {%- liquid assign fontsize = 16-%}
 {%- liquid assign checkbox_size = 28 -%}
 {%- liquid assign checkbox_width = 60 -%}
-{%- liquid assign checkbox_border_radius = 15 -%}
+{%- liquid assign checkbox_border_radius = 15 -%} {% endcomment %}
 
-{%- liquid assign has_rki_discount = true -%}
-
-{% assign rki_discount = "RKI:15" | split: ":" | last | times: 1.00000000 %}
+{% for tag in product.tags %}
+  {%- liquid assign tag_downcase = tag | downcase -%}
+  {% if tag_downcase contains "rki:" %}
+    {% assign has_rki_discount = true %}
+    {% assign rki_discount = tag_downcase | split: ":" | last | times: 1.00000000 %}
+  {% endif %}
+{% endfor %}
 
 {%- capture form_id -%}AddToCartForm-{{ section_id }}{%- endcapture -%}
 {%- form 'product', product, id: form_id, class: 'product-single__form' -%}
@@ -147,7 +151,7 @@
       endunless
     -%}
  <div class="bold_qb_grid"></div>
-    {% if has_rki_discount %}
+    {% comment %} {% if has_rki_discount %}
       {% assign rki_discount_multiplier = 100 | minus: rki_discount | divided_by: 100.00000000 %}
       {% capture rki_discount_json %}
         {
@@ -175,8 +179,6 @@
         ]
         }
       {% endcapture %}
-    {% endif %}
-    {% if has_rki_discount %}
       {%- for varient in product.variants -%}
         <div class="rki" 
           data-rki-widget='product' 
@@ -258,7 +260,7 @@
         
         /* Shift the handle to left on check event */
         .rki__checkbox-input:checked:before {
-          left: {{ checkbox_size }}px !important;
+          left: 31px !important;
           box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.6);
         }
         /* Background color when toggle button will be active */
@@ -284,7 +286,7 @@
         }
         </style>
         <!-- End ReKeepIt Opt-In Selector -->
-    {% endif %}
+    {% endif %} {% endcomment %}
    
     <button
       {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
