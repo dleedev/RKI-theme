@@ -1,0 +1,375 @@
+{%- comment -%}
+  ____      _  __              ___ _
+ |  _ \ ___| |/ /___  ___ _ __|_ _| |_
+ | |_) / _ \ ' // _ \/ _ \ '_ \| || __|
+ |  _ <  __/ . \  __/  __/ |_) | || |_
+ |_| \_\___|_|\_\___|\___| .__/___|\__|
+                         |_|
+
+  This snippet is used by the ReKeepIt Shopify app.
+
+  =========
+
+  Snippet Installation Instructions:
+  ------------
+
+  Theme Footer:
+  -----
+   - Code:   {% render 'rekeepit', type: 'footer' %}
+   - Where?  Before the closing </body> tag in layout/theme.liquid
+
+  Product Pages:
+  -----
+   - Code:   {% render 'rekeepit', type: 'product' %}
+   - Where?  Within the product <form>...</form> tags, wherever the checkbox should appear.
+   - Additional:
+
+   - Code: <span data-rki-discount-price></span>
+   - Where?  Wherever the discounted price should appear when the RKI option is active.
+
+   - Code: data-rki-original-price
+   - Where? As a data-attribute to the element(s) containing the product price.
+   - What's it do?  When the RKI option is active, it will add the 'rki--active' class.  You can use this class to style the original price, or hide it while RKI is active.
+   - Example:  If the product price was rendered like so...
+                 <div class="product__price"> {{ product.selected_variant | price }}</div>
+               Add the data-attribute like this...
+                 <div class="product__price" data-rki-original-price> {{ product.selected_variant | price }}</div>
+
+  Cart Page - Line Item Loop:
+  -----
+   - Code:   {% render 'rekeepit', type: 'cart-line-item', rki_line_item: your_line_item_variable %}
+   - Where?  The line-item forloop on templates/cart.liquid
+   - Note:   Depending on your cart page's code, the 'line_item' text following 'rki_line_item:' may be different.
+             Look for a line in the code that looks like this:  {% for ______ in cart.line_items %}...{% endfor %}.
+             You should replace 'your_line_item_variable' in the RKI code above with the text placed where the underline is.
+
+  Cart Page:
+  -----
+   - Code:   {% render 'rekeepit', type: 'cart-total-savings' %}
+   - Where?  The bottom of templates/cart.liquid, wherever you'd like the total-savings widget to appear.
+
+
+{%- endcomment -%}
+
+{% comment %}
+ __      __        _       _     _
+ \ \    / /       (_)     | |   | |
+  \ \  / /_ _ _ __ _  __ _| |__ | | ___  ___
+   \ \/ / _` | '__| |/ _` | '_ \| |/ _ \/ __|
+    \  / (_| | |  | | (_| | |_) | |  __/\__ \
+     \/ \__,_|_|  |_|\__,_|_.__/|_|\___||___/
+{% endcomment %}
+
+{% comment %} Replace these with RKI's actual asset urls {% endcomment %}
+{% assign rki_external_css = 'https://rki-dev.herokuapp.com/shopify_assets/rki_styles.css' %}
+{% assign rki_external_js = 'http://127.0.0.1:8000/shopify_assets/rki_script.js' %}
+
+{%- comment -%}
+  _____                _
+ |  __ \              | |
+ | |__) |___ _ __   __| | ___ _ __
+ |  _  // _ \ '_ \ / _` |/ _ \ '__|
+ | | \ \  __/ | | | (_| |  __/ |
+ |_|  \_\___|_| |_|\__,_|\___|_|
+
+{%- endcomment -%}
+
+{% assign heading = block.settings.heading | default:'rgba(var(--color-foreground), 0.75)' %}
+{% assign checkbox_color = block.settings.checkbox_color | default:'rgba(var(--color-button), var(--alpha-button-background))'%}
+{% assign checkbox_background_color = block.settings.checkbox_background_color | default:'#fff'%}
+{% assign fontsize = block.settings.fontsize | default:16 %}
+{% assign checkbox_size = block.settings.checkbox_size | default:28 %}
+{% assign checkbox_width = block.settings.checkbox_width | default:60 %}
+{% assign checkbox_border_radius = block.settings.checkbox_border_radius | default:15 %}
+
+{% if type == "footer" %}
+  <!-- ReKeepIt Footer Script -->
+
+  {% comment %} RKI Modals - added here {% endcomment %}
+  <div data-rki-modals-wrap></div>
+
+  {% comment %} RKI Config {% endcomment %}
+  <script type="text/javascript" data-rki-config>
+    window.rekeepit = window.rekeepit || {};
+    window.rekeepit.config = {
+      shop: {
+        url: {{ shop.permanent_domain | prepend: "https://" | json }}
+      },
+      customer: {
+        email: {%- if customer -%}{{ customer.email | json }}{%- else -%}null{%- endif %}
+      },
+      lineItem: {
+        value: "Commitment to not return."
+      },
+      language: {
+        product: {
+          inactive: "Commit to not return and save [rki_discount] with [rki_logo_image].",
+          active: "Saving [rki_discount_with_quantity] with [rki_logo_image].",
+          disabled: "Save [rki_discount] on this product with [rki_logo_image]."
+        },
+        lineItem: {
+          active: "Saving [rki_discount_with_quantity] with [rki_logo_image]."
+        },
+        cart: {
+          total_savings: "Saving [rki_savings] with [rki_logo_image]."
+        }
+      }
+
+    }
+  </script>
+
+  {% comment %} RKI External Assets {% endcomment %}
+  <link href="{{ rki_external_css }}" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="{{ rki_external_js }}"></script>
+
+  <!-- End ReKeepIt Footer Script -->
+
+{% elsif type == "product" or type == "cart-line-item" %}
+  {% comment %} Get Product/Variant {% endcomment %}
+  {% case type %}
+    {% when "product" %}
+      {% assign rki_product = product %}
+      {% assign rki_variant_id = product.selected_or_first_available_variant.id %}
+      {% assign rki_widget_id = product.id %}
+    {% when "cart-line-item" %}
+      {% assign rki_product = rki_line_item.product %}
+      {% assign rki_variant_id = rki_line_item.variant.id %}
+      {% assign rki_widget_id = rki_line_item.key | replace: ":", "" %}
+  {% endcase %}
+
+  {% comment %} Detect if this product has an RKI discount {% endcomment %}
+  {% assign has_rki_discount = false %}
+  {% for tag in rki_product.tags %}
+    {% assign tag_downcase = tag | downcase %}
+    {% if tag_downcase contains "rki:" %}
+      {% assign has_rki_discount = true %}
+      {% assign rki_discount = tag | split: ":" | last | times: 1.00000000 %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %} If RKI Discount - Assemble discount JSON {% endcomment %}
+  {% if has_rki_discount %}
+    {% assign rki_discount_multiplier = 100 | minus: rki_discount | divided_by: 100.00000000 %}
+    {% capture rki_discount_json %}
+      {
+        "discount": {{ rki_discount | json }},
+        "variants": [
+          {% for variant in rki_product.variants %}
+            {% assign rki_discount_price = variant.price | times: rki_discount_multiplier %}
+            {
+              "id": {{ variant.id | json }},
+              "original_price": {
+                "raw": {{ variant.price | json }},
+                "formatted": {{ variant.price | money | json }}
+              },
+              "discount_price": {
+                "raw": {{ rki_discount_price | json }},
+                "formatted": {{ rki_discount_price | money | json }}
+              },
+              "discount": {
+                "raw": {{ variant.price | minus: rki_discount_price | json }},
+                "formatted": {{ variant.price | minus: rki_discount_price | money | json }}
+              }
+            }{%- unless forloop.last -%}, {%- endunless -%}
+          {% endfor %}
+        ]
+      }
+    {% endcapture %}
+  {% endif %}
+
+  {% comment %} Render Opt-In Widget {% endcomment %}
+  {% if has_rki_discount %}
+    <!-- ReKeepIt Opt-In Selector -->
+    <style>
+      .rki__checkbox .rki__checkbox-ui {
+          position: relative;
+          font-size: 16px;
+          text-align: center;
+          color: {{ heading }} !important;
+          overflow: hidden;
+          top: 4px;
+          height: {{ checkbox_size }}px !important;
+          width: {{ checkbox_size }}px !important;
+          flex-shrink: 0;
+          border: 1px solid {{ checkbox_color }} !important;
+          border-radius: {{ checkbox_border_radius }}px !important;
+          margin-right: 7px
+      }
+      .rki__label{
+        font-size: {{ fontsize }}px !important;
+        color: {{ heading }} !important;
+      }
+      /* Toggle Button */
+      .rki__checkbox-input {
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: transparent;
+        position: relative !important;
+        border: 0;
+        outline: 0;
+        cursor: pointer;
+        height: {{ checkbox_size }}px !important;
+        width: {{ checkbox_width }}px !important;
+        margin-right: 10px !important;
+        overflow: unset !important;
+      }
+
+
+      /* To create surface of toggle button */
+      .rki__checkbox-input:after {
+        content: '';
+        height: {{ checkbox_size }}px !important;
+        width: {{ checkbox_width }}px !important;
+        display: inline-block;
+        background: {{ checkbox_color }} !important;
+              border-radius: {{ checkbox_border_radius }}px !important;
+        clear: both;
+              border: 4px solid rgb(var(--color-base-background-1));
+      }
+
+
+      /* Contents before checkbox to create toggle handle */
+      .rki__checkbox-input:before {
+        content: '';
+        width: {{ checkbox_size }}px !important;
+        height: {{ checkbox_size }}px !important;
+        display: block;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        border-radius: 50%;
+        background: {{ checkbox_background_color }};
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+      }
+
+      .rki__checkbox-input:after {
+        background: gray !important;
+      }
+
+      /* Shift the handle to left on check event */
+      .rki__checkbox-input:checked:before {
+        left: {{ checkbox_size }}px !important;
+        box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.6);
+      }
+      /* Background color when toggle button will be active */
+      .rki__checkbox-input:checked:after {
+        background: {{ checkbox_color }} !important;
+      }
+
+      .rki__checkbox-ui {
+        display:none !important;
+      }
+
+      /* Transition for smoothness */
+      .rki__checkbox-input,
+      .rki__checkbox-input:before,
+      .rki__checkbox-input:after,
+      .rki__checkbox-input:checked:before,
+      .rki__checkbox-input:checked:after {
+        transition: ease .3s;
+        -webkit-transition: ease .3s;
+        -moz-transition: ease .3s;
+        -o-transition: ease .3s;
+      }
+    </style>
+
+    <div
+      class="rki"
+      data-rki-widget='{{ type }}'
+      data-rki-id='{{ rki_widget_id }}'
+      data-rki-variant-id='{{ rki_variant_id }}'
+      data-rki-discount-json='{{ rki_discount_json | strip }}'
+      {% if type == 'cart-line-item' %}
+      data-rki-line-item='{
+        "id": {{ rki_line_item.id | json }},
+        "key": {{ rki_line_item.key | json }},
+        "quantity": {{ rki_line_item.quantity | json }},
+        "properties": {
+          {% for p in rki_line_item.properties %}
+            {{ p.first | json }}: {{ p.last | json }}{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        }
+      }'
+      {% endif %}
+    ></div>
+    <!-- End ReKeepIt Opt-In Selector -->
+  {% endif %}
+
+{% elsif type == "cart-total-savings" and cart %}
+  <!-- Begin ReKeepIt Cart Savings -->
+  {% capture discount_arr %}
+    {% for line_item in cart.items %}
+      {% for discount in line_item.line_level_discount_allocations %}
+        %%%{
+          "title": {{ discount.discount_application.title | json }},
+          "amount": {{ discount.discount_application.total_allocated_amount | json }}
+        }
+      {% endfor %}
+    {% endfor %}
+  {% endcapture %}
+
+  {% capture line_item_discounts_json %}
+  {
+    "discounts": [
+      {{ discount_arr | split: "%%%" | join: "," | replace_first: ",", "" }}
+    ]
+  }
+  {% endcapture %}
+
+  <div
+    class="rki"
+    data-rki-widget='cart-total-savings'
+    data-rki-savings-json='{{ line_item_discounts_json }}'
+  ></div>
+  <!-- End ReKeepIt Cart Savings -->
+{% endif %}
+
+<script type="application/ld+json">
+  {
+    "name": "RKI",
+    "target": "section",
+    "settings": [
+      {
+        "type": "color",
+        "id": "heading",
+        "label": "Change Text Color",
+        "default": "#050505"
+      },
+      {
+        "type": "color",
+        "id": "checkbox_color",
+        "label": "Change CheckBox Color",
+        "default": "#0D9B13"
+      },
+      {
+        "type": "color",
+        "id": "checkbox_background_color",
+        "label": "Change CheckBox Background Color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "number",
+        "id": "fontsize",
+        "label": "Change Text Font Size",
+        "default": 16
+      },
+      {
+        "type": "number",
+        "id": "checkbox_size",
+        "label": "Change CheckBox Height",
+        "default": 28
+      },
+      {
+        "type": "number",
+        "id": "checkbox_width",
+        "label": "Change CheckBox Width",
+        "default": 60
+      },
+      {
+        "type": "number",
+        "id": "checkbox_border_radius",
+        "label": "Change CheckBox Border Radius",
+        "default": 15
+      }
+    ]
+  }
+</script>

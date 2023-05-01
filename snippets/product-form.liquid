@@ -1,10 +1,10 @@
-{% comment %} {%- liquid assign heading = 'rgba(var(--color-foreground), 0.75)' -%}
+{%- liquid assign heading = 'rgba(var(--color-foreground), 0.75)' -%}
 {%- liquid assign checkbox_color = "#0D9B13" -%}
 {%- liquid assign checkbox_background_color = "#FFFFFF" -%}
 {%- liquid assign fontsize = 16-%}
 {%- liquid assign checkbox_size = 28 -%}
 {%- liquid assign checkbox_width = 60 -%}
-{%- liquid assign checkbox_border_radius = 15 -%} {% endcomment %}
+{%- liquid assign checkbox_border_radius = 15 -%}
 
 {% for tag in product.tags %}
   {%- liquid assign tag_downcase = tag | downcase -%}
@@ -151,7 +151,7 @@
       endunless
     -%}
  <div class="bold_qb_grid"></div>
-    {% comment %} {% if has_rki_discount %}
+    {% if has_rki_discount %}
       {% assign rki_discount_multiplier = 100 | minus: rki_discount | divided_by: 100.00000000 %}
       {% capture rki_discount_json %}
         {
@@ -286,7 +286,7 @@
         }
         </style>
         <!-- End ReKeepIt Opt-In Selector -->
-    {% endif %} {% endcomment %}
+    {% endif %}
    
     <button
       {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
