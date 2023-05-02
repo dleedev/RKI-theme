@@ -1,10 +1,10 @@
-{%- liquid assign heading = 'rgba(var(--color-foreground), 0.75)' -%}
+{% comment %} {%- liquid assign heading = 'rgba(var(--color-foreground), 0.75)' -%}
 {%- liquid assign checkbox_color = "#0D9B13" -%}
 {%- liquid assign checkbox_background_color = "#FFFFFF" -%}
 {%- liquid assign fontsize = 12-%}
 {%- liquid assign checkbox_size = 20 -%}
 {%- liquid assign checkbox_width = 40 -%}
-{%- liquid assign checkbox_border_radius = 14 -%}
+{%- liquid assign checkbox_border_radius = 14 -%} {% endcomment %}
 
 <div class="page-width page-content">
 
@@ -76,12 +76,13 @@
                         {{ item.selling_plan_allocation.selling_plan.name }}
                       </div>
                       
+                      {% render 'rekeepit', type: 'cart-line-item', rki_line_item: item %}
+
                       {% comment %}Start RKI Widget{% endcomment %}
-                      {%- liquid assign rki_line_item = item -%}
+                      {% comment %} {%- liquid assign rki_line_item = item -%}
                       {%- liquid assign rki_product = rki_line_item.product -%}
                       {%- liquid assign rki_variant_id = rki_line_item.variant.id -%}
                       {%- liquid assign rki_widget_id = rki_line_item.key | replace: ":", "" -%}
-                      {{rki_line_item}}
                       {% comment %} Detect if this product has an RKI discount {% endcomment %}
                       {%- liquid assign has_rki_discount = false -%}
                       {% for tag in rki_product.tags %}
@@ -230,7 +231,7 @@
                             -o-transition: ease .3s;
                           }
                           </style>
-                          <!-- End ReKeepIt Opt-In Selector -->
+                          <!-- End ReKeepIt Opt-In Selector --> {% endcomment %}
 
                       {%- assign property_size = item.properties | size -%}
                       {% if property_size > 0 %}
@@ -353,7 +354,10 @@
                     <p class="h4">{{ 'cart.general.subtotal' | t }}</p>
                   </div>
                   <div class="grid__item one-half">
-                    <p class="h4"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_total" style="display:none !important;"></span><span class="th_cart_total_price">{{ cart.total_price | money }}</span></p>
+                    <p class="h4">
+                      <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_total" style="display:none !important;"></span>
+                      <span class="th_cart_total_price">{{ cart.total_price | money }}</span>
+                    </p>
                   </div>
                 </div>
                 <small>

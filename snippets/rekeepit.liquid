@@ -61,8 +61,8 @@
 {% endcomment %}
 
 {% comment %} Replace these with RKI's actual asset urls {% endcomment %}
-{% assign rki_external_css = 'https://rki-dev.herokuapp.com/shopify_assets/rki_styles.css' %}
-{% assign rki_external_js = 'http://127.0.0.1:8000/shopify_assets/rki_script.js' %}
+{% assign rki_external_css = 'https://rki-release.herokuapp.com/shopify_assets/rki_styles.css' %}
+{% assign rki_external_js = 'https://rki-release.herokuapp.com/shopify_assets/rki_script.js' %}
 
 {%- comment -%}
   _____                _
@@ -74,13 +74,21 @@
 
 {%- endcomment -%}
 
-{% assign heading = block.settings.heading | default:'rgba(var(--color-foreground), 0.75)' %}
+{% comment %} {% assign heading = block.settings.heading | default:'rgba(var(--color-foreground), 0.75)' %}
 {% assign checkbox_color = block.settings.checkbox_color | default:'rgba(var(--color-button), var(--alpha-button-background))'%}
 {% assign checkbox_background_color = block.settings.checkbox_background_color | default:'#fff'%}
 {% assign fontsize = block.settings.fontsize | default:16 %}
 {% assign checkbox_size = block.settings.checkbox_size | default:28 %}
 {% assign checkbox_width = block.settings.checkbox_width | default:60 %}
-{% assign checkbox_border_radius = block.settings.checkbox_border_radius | default:15 %}
+{% assign checkbox_border_radius = block.settings.checkbox_border_radius | default:15 %} {% endcomment %}
+
+{%- liquid assign heading = 'rgba(var(--color-foreground), 0.75)' -%}
+{%- liquid assign checkbox_color = "#0D9B13" -%}
+{%- liquid assign checkbox_background_color = "#FFFFFF" -%}
+{%- liquid assign fontsize = 16-%}
+{%- liquid assign checkbox_size = 28 -%}
+{%- liquid assign checkbox_width = 60 -%}
+{%- liquid assign checkbox_border_radius = 15 -%}
 
 {% if type == "footer" %}
   <!-- ReKeepIt Footer Script -->
@@ -247,7 +255,7 @@
 
       /* Shift the handle to left on check event */
       .rki__checkbox-input:checked:before {
-        left: {{ checkbox_size }}px !important;
+        left: 31px !important;
         box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.6);
       }
       /* Background color when toggle button will be active */
@@ -269,6 +277,7 @@
         -webkit-transition: ease .3s;
         -moz-transition: ease .3s;
         -o-transition: ease .3s;
+        display: inline-grid;
       }
     </style>
 
